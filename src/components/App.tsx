@@ -6,7 +6,7 @@ import { theme } from "./styles/theme";
 import { flexCenter } from "./styles/mixin";
 import { GlobalStyle } from "./styles/globalStyle";
 
-import Home from "./Home";
+import Welcome from "./Welcome";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Content>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Welcome} />
             <Route path="/stages" />
             <Route path="/stages/:id" />
             <Redirect to="/" />
