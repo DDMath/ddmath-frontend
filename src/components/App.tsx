@@ -6,6 +6,7 @@ import { theme } from "./styles/theme";
 import { flexCenter } from "./styles/mixin";
 import { GlobalStyle } from "./styles/globalStyle";
 
+import Game from "./Game";
 import Welcome from "./Welcome";
 
 function App() {
@@ -16,8 +17,8 @@ function App() {
         <Content>
           <Switch>
             <Route exact path="/" component={Welcome} />
+            <Route path="/stages/:stage" component={Game} />
             <Route path="/stages" />
-            <Route path="/stages/:id" />
             <Redirect to="/" />
           </Switch>
         </Content>
@@ -41,6 +42,8 @@ const Content = styled.div`
 
   overflow: hidden;
   border-radius: 5px;
+
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 10px 20px, rgba(0, 0, 0, 0.4) 0px 10px 10px;
 `;
 
 export default App;

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 type ButtonProps = {
-  text: string;
+  text?: string;
   className?: string;
   children?: JSX.Element | JSX.Element[] | string;
 };

@@ -5,3 +5,9 @@ export const flexCenter = css`
   justify-content: center;
   align-items: center;
 `;
+
+export const fullWidthAndHeight = css`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
