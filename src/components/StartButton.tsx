@@ -17,7 +17,7 @@ const StyledButton = styled(Button)`
 
   color: ${({ theme }) => theme.colors.darkblue};
   font-size: 40px;
-  border: 3px solid black;
+  border: 3px solid ${({ theme }) => theme.colors.black};
   border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.yellow};
   letter-spacing: 5px;
