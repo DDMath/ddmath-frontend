@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 export default class LinkGame extends Phaser.Scene {
-  private background: Phaser.GameObjects.Image;
+  private background!: Phaser.GameObjects.Image;
 
   constructor() {
     super("linkgame");
