@@ -8,7 +8,7 @@ import { fullWidthAndHeight } from "./styles/mixin";
 function Welcome() {
   return (
     <Wrapper>
-      <Link to="/stages/1">
+      <Link to="/stages">
         <StartButton />
       </Link>
     </Wrapper>
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 
   background-size: cover;
   background-position: center;
-  background-image: url("welcome.png");
+  background-image: url("background/welcome.png");
 `;
 
 export default Welcome;

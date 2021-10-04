@@ -17,8 +17,7 @@ function App() {
         <Content>
           <Switch>
             <Route exact path="/" component={Welcome} />
-            <Route path="/stages/:stage" component={Game} />
-            <Route path="/stages" />
+            <Route path="/stages" component={Game} />
             <Redirect to="/" />
           </Switch>
         </Content>

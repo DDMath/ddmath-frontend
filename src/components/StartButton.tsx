@@ -9,11 +9,11 @@ function StartButton() {
 
 const StyledButton = styled(Button)`
   position: absolute;
-  right: 140px;
-  bottom: 80px;
+  right: 255px;
+  bottom: 50px;
 
   padding: 15px 12px;
-  width: 220px;
+  width: 280px;
 
   color: ${({ theme }) => theme.colors.darkblue};
   font-size: 40px;
