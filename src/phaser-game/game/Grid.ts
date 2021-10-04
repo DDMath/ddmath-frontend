@@ -1,89 +1,71 @@
 import Phaser from "phaser";
+import DraggableCard from "./DraggableCard";
+import shuffleArray from "../../utils/shuffleArray";
 
-import Card from "./Card";
-import cardTypes from "./cardTypes";
-import hitArea from "./hitArea";
+import { MatchGameCardType } from "./matchGameCardTypes";
 
-type GridType = {
-  scene: Phaser.Scene;
-  columns: number;
+type DataType = {
   rows: number;
+  columns: number;
+  xStart: number;
+  yStart: number;
+  xOffset: number;
+  yOffset: number;
+  scene: Phaser.Scene;
+  cardTypes: MatchGameCardType[];
+  onDragEnd(gameObject: DraggableCard): void;
 };
 
 export default class Grid {
   private rows: number;
+  private xStart: number;
   private yStart: number;
   private xOffset: number;
   private yOffset: number;
   private columns: number;
+  private cardOrder: number[];
+  private _completedCards = 0;
 
   private scene: Phaser.Scene;
-  private cards: Phaser.GameObjects.Sprite[];
-  private completed: Phaser.GameObjects.Sprite[];
+  private cardTypes: MatchGameCardType[];
+  private _cards: DraggableCard[] = [];
 
-  constructor(data: GridType) {
-    const { scene, rows, columns } = data;
+  onDragEnd: (gameObject: DraggableCard) => void;
 
-    this.xOffset = 650;
-    this.yOffset = 110;
-    this.yStart = scene.game.config.height - 140;
+  constructor(data: DataType) {
+    const { scene, rows, columns, xOffset, yOffset, xStart, yStart, cardTypes, onDragEnd } = data;
 
+    this.scene = scene;
     this.rows = rows;
     this.columns = columns;
 
-    this.cards = [];
-    this.completed = [];
-    this.scene = scene;
+    this.xStart = xStart;
+    this.yStart = yStart;
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
+    this.onDragEnd = onDragEnd;
 
-    this.order = new Array(cardTypes.length).fill(null).map((_, i) => i);
-    Phaser.Actions.Shuffle(this.order);
+    this.cardTypes = cardTypes;
+
+    const numberArray = new Array(this.cardTypes.length).fill(null).map((_, i) => i);
+    this.cardOrder = shuffleArray(numberArray);
 
     this.addCards(0);
   }
 
   addCards(startIndex: number = this.columns * this.rows - 1) {
     for (let i = startIndex; i < this.columns * this.rows; i++) {
-      const cardType = cardTypes[this.order.pop()];
+      const cardType = this.cardTypes[this.cardOrder.pop() || 0];
 
-      const card = new Card({
+      const card = new DraggableCard({
         scene: this.scene,
-        x: this.xOffset + (this.scene.game.config.width / 2 - this.xOffset) * (i % this.columns),
+        x: this.xStart + this.xOffset * (i % this.columns),
         y: this.yStart - this.yOffset * Math.floor(i / this.columns),
         name: cardType.name,
         image: cardType.image,
         value: cardType.value,
-        ondragend: (pointer, gameObject: Phaser.GameObjects.GameObject) => {
-          for (let j = 0; j < hitArea.length; j++) {
-            const area = hitArea[j];
-            const { fruit, value } = gameObject;
-
-            const xDiff = Math.abs(area.pointX - gameObject.x);
-            const yDiff = Math.abs(area.pointY - gameObject.y);
-            const isCorrect = area.name === fruit + "-" + value;
-
-            if (xDiff < 40 && yDiff < 40 && isCorrect) {
-              gameObject.disableInteractive();
-
-              gameObject.originalX = area.pointX;
-              gameObject.originalY = area.pointY;
-
-              this.completed.push(gameObject);
-
-              const order = this.cards.findIndex((card) => {
-                return card.name === gameObject.name;
-              });
-
-              this.cards = this.cards.filter((_, index) => order !== index);
-              this.moveCardsDown(order);
-
-              if (this.completed.length === cardTypes.length) {
-                addRestartButton();
-              }
-            }
-          }
-
-          gameObject.x = gameObject.originalX;
-          gameObject.y = gameObject.originalY;
+        ondragend: (pointer: Phaser.Input.Pointer, gameObject: DraggableCard) => {
+          this.onDragEnd(gameObject);
         },
       });
 
@@ -92,7 +74,7 @@ export default class Grid {
     }
   }
 
-  moveCardsDown(index) {
+  moveCardsDown(index: number) {
     this.cards.forEach((card, i) => {
       if (index > i) {
         return;
@@ -107,8 +89,28 @@ export default class Grid {
       });
     });
 
-    if (this.completed.length + this.cards.length < cardTypes.length) {
+    if (this.completedCards + this.cards.length < this.cardTypes.length) {
       setTimeout(() => this.addCards(), 300);
     }
+  }
+
+  removeCompletedCard(order: number) {
+    this.cards = this.cards.filter((_, index) => order !== index);
+  }
+
+  get completedCards() {
+    return this._completedCards;
+  }
+
+  set completedCards(number) {
+    this._completedCards = number;
+  }
+
+  get cards() {
+    return this._cards;
+  }
+
+  set cards(cardList) {
+    this._cards = cardList;
   }
 }
