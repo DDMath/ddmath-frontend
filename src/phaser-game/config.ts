@@ -3,7 +3,7 @@ import Phaser from "phaser";
 import Stages from "./scenes/Stages";
 import LinkGame from "./scenes/LinkGame";
 import Preloader from "./scenes/Preloader";
-import CardMatchGame from "./scenes/CardMatchGame";
+import PuzzleGame from "./scenes/PuzzleGame";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -11,8 +11,11 @@ export const config: Phaser.Types.Core.GameConfig = {
   height: 600,
   physics: {
     default: "arcade",
+    arcade: {
+      debug: true,
+    },
   },
   parent: "game-container",
   backgroundColor: "#333333",
-  scene: [Preloader, Stages, CardMatchGame, LinkGame],
+  scene: [Preloader, Stages, PuzzleGame, LinkGame],
 };
