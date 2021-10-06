@@ -1,6 +1,10 @@
-export default function shuffleArray<T>(array: T[]): T[] {
-  for (let i = array.length - 1; i > 0; i--) {
-    const targetIndex = Math.floor(Math.random() * (i + 1));
+export default function shuffleArray<T extends number[]>(array: T, columns: number): T {
+  const targetArrayLength = array.length / columns;
+
+  for (let i = 0; i < array.length; i++) {
+    const targetIndex =
+      Math.floor(Math.random() * targetArrayLength) +
+      Math.floor(i / targetArrayLength) * targetArrayLength;
 
     [array[i], array[targetIndex]] = [array[targetIndex], array[i]];
   }
