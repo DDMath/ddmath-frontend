@@ -6,8 +6,6 @@ enum CharacterState {
 }
 
 export default class Stages extends Phaser.Scene {
-  private stage1!: Phaser.GameObjects.Sprite;
-  private stage2!: Phaser.GameObjects.Sprite;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private background!: Phaser.GameObjects.Image;
   private characterState = CharacterState.Standing;
@@ -26,18 +24,16 @@ export default class Stages extends Phaser.Scene {
     spriteStage1.setInteractive();
     spriteStage2.setInteractive();
 
-    this.stage1 = spriteStage1;
-    this.stage2 = spriteStage2;
     this.add.existing(spriteStage1);
     this.add.existing(spriteStage2);
 
-    spriteStage1.on("pointerdown", () => this.scene.start("matchgame"));
-    spriteStage1.on("pointerover", () => this.stage1.setTint(0xf8edeb));
-    spriteStage1.on("pointerout", () => this.stage1.clearTint());
+    spriteStage1.on("pointerdown", () => this.scene.start("puzzlegame"));
+    spriteStage1.on("pointerover", () => spriteStage1.setTint(0xf8edeb));
+    spriteStage1.on("pointerout", () => spriteStage1.clearTint());
 
     spriteStage2.on("pointerdown", () => this.scene.start("linkgame"));
-    spriteStage2.on("pointerover", () => this.stage2.setTint(0xf8edeb));
-    spriteStage2.on("pointerout", () => this.stage2.clearTint());
+    spriteStage2.on("pointerover", () => spriteStage2.setTint(0xf8edeb));
+    spriteStage2.on("pointerout", () => spriteStage2.clearTint());
 
     this.character = this.physics.add
       .sprite(110, 410, "character-stand")
