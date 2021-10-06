@@ -1,25 +1,24 @@
+import Phaser from "phaser";
 import BaseCard from "./BaseCard";
 
 type CardData = {
   x: number;
   y: number;
   name: string;
+  game: string;
   image: string;
-  value: number;
+  value: string | number;
   scene: Phaser.Scene;
   ondragend(pointer: Phaser.Input.Pointer, gameObject: DraggableCard): void;
 };
 
 export default class DraggableCard extends BaseCard {
-  private draggable: boolean;
-
   constructor(data: CardData) {
-    const { scene, ondragend } = data;
+    const { scene, ondragend, game } = data;
 
     super(data);
 
-    this.draggable = true;
-    this.setInteractive({ draggable: true });
+    game === "puzzleGame" ? this.setInteractive({ draggable: true }) : null;
 
     this.scene.input.on(
       "drag",
