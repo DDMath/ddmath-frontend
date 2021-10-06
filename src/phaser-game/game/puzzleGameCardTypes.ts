@@ -1,10 +1,10 @@
-export type MatchGameCardType = {
+export type PuzzleGameCardTypes = {
   name: string;
   image: string;
   value: number;
 };
 
-const cardTypes: MatchGameCardType[] = [
+export const puzzleGameCardTypes: PuzzleGameCardTypes[] = [
   {
     name: "strawberry1",
     image: "strawberry-1",
@@ -51,5 +51,3 @@ const cardTypes: MatchGameCardType[] = [
     value: 3,
   },
 ];
-
-export default cardTypes;

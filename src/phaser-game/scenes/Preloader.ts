@@ -25,8 +25,22 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("strawberry-1", "card/strawberry1.png");
     this.load.image("strawberry-2", "card/strawberry2.png");
     this.load.image("strawberry-3", "card/strawberry3.png");
+    this.load.image("music-blue", "card/music-blue.png");
+    this.load.image("music-yellow", "card/music-yellow.png");
+    this.load.image("music-green", "card/music-green.png");
+    this.load.image("trophy-blue", "card/trophy-blue.png");
+    this.load.image("trophy-yellow", "card/trophy-yellow.png");
+    this.load.image("trophy-green", "card/trophy-green.png");
+    this.load.image("check-blue", "card/check-blue.png");
+    this.load.image("check-yellow", "card/check-yellow.png");
+    this.load.image("check-green", "card/check-green.png");
+    this.load.image("star-blue", "card/star-blue.png");
+    this.load.image("star-yellow", "card/star-yellow.png");
+    this.load.image("star-green", "card/star-green.png");
     this.load.atlas("character-stand", "character/stand.png", "character/stand.json");
     this.load.atlas("character-run", "character/run.png", "character/run.json");
+    this.load.image("goBack", "game/goBackButton.png");
+    this.load.image("point", "game/point.png");
   }
 
   create() {
@@ -56,6 +70,6 @@ export default class Preloader extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.scene.start("stages");
+    this.scene.start("linkgame");
   }
 }
