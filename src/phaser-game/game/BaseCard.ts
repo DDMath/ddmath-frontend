@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import LinkGame from "../scenes/LinkGame";
 import DraggableCard from "./DraggableCard";
 
 type DataType = {
@@ -7,7 +8,7 @@ type DataType = {
   y: number;
   name: string;
   image: string;
-  value: number;
+  value: string | number;
 };
 
 export default class BaseCard extends Phaser.GameObjects.Container {
@@ -15,8 +16,7 @@ export default class BaseCard extends Phaser.GameObjects.Container {
   private spriteImage: Phaser.GameObjects.Sprite;
   private _originalX!: number;
   private _originalY!: number;
-
-  public value: number;
+  public value: string | number;
   public fruit: string;
   public readonly name: string;
 
@@ -24,9 +24,14 @@ export default class BaseCard extends Phaser.GameObjects.Container {
     const { scene, x, y, value, name, image } = data;
 
     const spriteCard = new Phaser.GameObjects.Sprite(scene, 2, 4, "card");
-    const spriteImage = new Phaser.GameObjects.Sprite(scene, 0, 0, image);
+    const spriteImage = new Phaser.GameObjects.Sprite(scene, 0, 0, image).setOrigin(0.5, 0.5);
 
     super(scene, x, y, [spriteCard, spriteImage]);
+
+    spriteImage.setDisplaySize(85, 85);
+
+    const randomDegree = Math.floor(Math.random() * 4) * 90;
+    spriteImage.angle = scene instanceof LinkGame ? randomDegree : 0;
 
     this.spriteCard = spriteCard;
     this.spriteImage = spriteImage;
