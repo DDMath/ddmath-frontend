@@ -12,9 +12,7 @@ export default class Cannon extends Phaser.GameObjects.Container {
 
     this.shotPreview = new ShotPreview(scene);
 
-    scene.input.on("pointerup", () => {
-      this.shotPreview.removePreviousPreview();
-    });
+    scene.input.on("pointerup", () => this.shotPreview.removePreviousPreview());
   }
 
   update() {
@@ -33,7 +31,7 @@ export default class Cannon extends Phaser.GameObjects.Container {
     const rotation = vec.angle();
 
     this.rotation = rotation + Math.PI / 2;
-    this.shotPreview.showPreview(400, 570, vec, 30);
+    this.shotPreview.showPreview(400, 570, vec, 20);
 
     if (this.shotPreview.shotPreviewsLength() > 1000) {
       this.shotPreview.removePreviousPreview();
