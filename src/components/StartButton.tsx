@@ -10,7 +10,7 @@ function StartButton() {
 const StyledButton = styled(Button)`
   position: absolute;
   right: 255px;
-  bottom: 50px;
+  bottom: 100px;
 
   padding: 15px 12px;
   width: 280px;

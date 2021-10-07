@@ -4,6 +4,7 @@ import Stages from "./scenes/Stages";
 import LinkGame from "./scenes/LinkGame";
 import Preloader from "./scenes/Preloader";
 import PuzzleGame from "./scenes/PuzzleGame";
+import ShootingGame from "./scenes/ShootingGame";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -17,5 +18,5 @@ export const config: Phaser.Types.Core.GameConfig = {
   },
   parent: "game-container",
   backgroundColor: "#333333",
-  scene: [Preloader, Stages, PuzzleGame, LinkGame],
+  scene: [Preloader, Stages, PuzzleGame, LinkGame, ShootingGame],
 };

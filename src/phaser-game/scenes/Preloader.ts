@@ -14,6 +14,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("stages", "background/stages.png");
     this.load.image("stage1", "background/stage1.png");
     this.load.image("stage2", "background/stage2.png");
+    this.load.image("stage3", "background/stage3.png");
     this.load.image("board", "game/board.png");
     this.load.image("card", "card/card.png");
     this.load.image("kiwi-1", "card/kiwi1.png");
@@ -41,6 +42,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.atlas("character-run", "character/run.png", "character/run.json");
     this.load.image("goBack", "game/goBackButton.png");
     this.load.image("point", "game/point.png");
+    this.load.image("cannon", "game/cannon.png");
   }
 
   create() {
@@ -70,6 +72,6 @@ export default class Preloader extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.scene.start("linkgame");
+    this.scene.start("shootingGame");
   }
 }

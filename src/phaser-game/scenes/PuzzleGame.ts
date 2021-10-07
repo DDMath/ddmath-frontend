@@ -3,7 +3,7 @@ import Phaser from "phaser";
 import Grid from "../game/Grid";
 import GameBoard from "../game/GameBoard";
 import hitArea from "../game/puzzleHitArea";
-import GoBackButton from "../game/goBackButton";
+import GoBackButton from "../game/GoBackButton";
 import DraggableCard from "../game/DraggableCard";
 import { puzzleGameCardTypes } from "../game/puzzleGameCardTypes";
 
@@ -13,7 +13,7 @@ export default class PuzzleGame extends Phaser.Scene {
   private background!: Phaser.GameObjects.Image;
 
   constructor() {
-    super("puzzlegame");
+    super("puzzleGame");
   }
 
   create() {

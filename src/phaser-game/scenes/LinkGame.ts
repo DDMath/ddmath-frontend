@@ -19,7 +19,7 @@ export default class LinkGame extends Phaser.Scene implements Test {
   private _points: Phaser.GameObjects.Sprite[] = [];
 
   constructor() {
-    super("linkgame");
+    super("linkGame");
   }
 
   create() {
