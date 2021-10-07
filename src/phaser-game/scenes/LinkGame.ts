@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 import Grid from "../game/Grid";
 
-import GoBackButton from "../game/goBackButton";
-import { linkGameCardTypes } from "../game/linkGameCardTypes";
+import GoBackButton from "../game/GoBackButton";
 import DraggablePoint from "../game/DraggablePoint";
+import { linkGameCardTypes } from "../game/linkGameCardTypes";
 
 interface Test extends Phaser.Scene {
   drawLine(this: LinkGame, point: Phaser.GameObjects.Sprite): void;
