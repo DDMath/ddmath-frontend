@@ -1,16 +1,20 @@
 import Phaser from "phaser";
 
-import Ball from "../game/Ball";
-import Enemy from "../game/Enemy";
-import Cannon from "../game/Cannon";
-import GoBackButton from "../game/GoBackButton";
+import Ball from "../stage3/Ball";
+import Enemy from "../stage3/Enemy";
+import Cannon from "../stage3/Cannon";
+import GoBackButton from "../common/GoBackButton";
 
 export default class ShootingGame extends Phaser.Scene {
   private goBackbutton!: GoBackButton;
   private background!: Phaser.GameObjects.Image;
 
+  private order!: number;
+
+  private ball?: Ball;
   private cannon!: Cannon;
   private enemies: Enemy[] = [];
+  private enemyGroup!: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super("shootingGame");
@@ -26,69 +30,57 @@ export default class ShootingGame extends Phaser.Scene {
     this.cannon = new Cannon(this, width / 2, height - 35, "cannon").setDepth(3);
     this.cannon.setShotPreview();
 
-    this.add.existing(this.cannon);
-
-    const group = this.physics.add.group({
+    this.enemyGroup = this.physics.add.group({
       bounceX: 1,
       bounceY: 1,
       velocityX: 150,
-      velocityY: 150,
+      velocityY: -50,
+      maxVelocityX: 300,
       collideWorldBounds: true,
     });
 
+    this.createEnemies(this.enemyGroup);
+
+    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
+    this.physics.add.collider(this.enemyGroup, this.cannon);
+
+    this.input.on("pointerup", this.handlePointerUp, this);
+    this.order = 1;
+  }
+
+  handlePointerUp() {
+    const ball = this.cannon.loadBall();
+
+    this.cannon.shoot(ball);
+    this.checkCollision(ball);
+
+    this.cannon.getShotPreview.removePreviousPreview();
+  }
+
+  createEnemies(enemyGroup: Phaser.Physics.Arcade.Group) {
     for (let i = 0; i < 10; i++) {
-      const enemy = new Enemy(this, Phaser.Math.Between(300, 600), Phaser.Math.Between(0, 100));
+      const enemy = new Enemy(this, Math.random() * 200 + 300, Math.random() * 100, i + 1);
 
-      const dx = this.scale.width - enemy.x;
-      const dy = this.scale.height - enemy.y;
-
-      const vec = new Phaser.Math.Vector2(dx, dy);
-      vec.normalize();
-
-      group.add(enemy).setVelocity(50, -150);
+      enemyGroup.add(enemy).setVelocity(50, -150);
       this.enemies.push(enemy);
     }
-
-    this.physics.add.collider(group, group);
-    this.physics.add.collider(group, this.cannon);
   }
 
   checkCollision(ball: Ball) {
-    if (!ball) {
-      return;
-    }
+    this.physics.add.collider(ball, this.enemyGroup, (ball, enemy) => {
+      (ball as Ball).destroy();
 
-    for (let i = 0; i < this.enemies.length; i++) {
-      const enemy = this.enemies[i];
-
-      this.physics.add.collider(ball, enemy, () => {
-        ball.destroy();
-
-        this.attackEnemy(enemy);
-      });
-
-      if (ball.y < -100 || ball.y > 900) {
-        ball.destroy();
+      if (this.order !== (enemy as Enemy).value) {
+        return;
       }
-    }
-  }
 
-  attackEnemy(enemy: Enemy) {
-    enemy.getDamage();
-
-    if (enemy.value === 0) {
-      enemy.destroy();
-    }
-  }
-
-  getBall(): Ball {
-    return this.cannon.getFiredBall;
+      (enemy as Enemy).getDamage();
+      this.order++;
+    });
   }
 
   update() {
     this.cannon.update();
     this.enemies.forEach((enemy) => enemy.update());
-
-    this.checkCollision(this.getBall());
   }
 }
