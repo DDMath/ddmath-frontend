@@ -52,7 +52,7 @@ export default class ShotPreview {
   }
 
   removePreviousPreview() {
-    for (let i = 0; i < this.previews.length; ++i) {
+    for (let i = 0; i < this.previews.length; i++) {
       this.previews[i].destroy();
     }
 
