@@ -1,11 +1,11 @@
 import Phaser from "phaser";
 
-import Grid from "../game/Grid";
-import GameBoard from "../game/GameBoard";
-import hitArea from "../game/puzzleHitArea";
-import GoBackButton from "../game/GoBackButton";
-import DraggableCard from "../game/DraggableCard";
-import { puzzleGameCardTypes } from "../game/puzzleGameCardTypes";
+import Grid from "../common/Grid";
+import GameBoard from "../stage1/GameBoard";
+import hitArea from "../stage1/puzzleHitArea";
+import GoBackButton from "../common/GoBackButton";
+import DraggableCard from "../common/DraggableCard";
+import { puzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
 
 export default class PuzzleGame extends Phaser.Scene {
   private grid!: Grid;

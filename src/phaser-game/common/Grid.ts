@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 import DraggableCard from "./DraggableCard";
-import DraggablePoint from "./DraggablePoint";
+import DraggablePoint from "../stage2/DraggablePoint";
 import shuffleArray from "../../utils/shuffleArray";
 
-import { LinkGameCardTypes } from "./linkGameCardTypes";
-import { PuzzleGameCardTypes } from "./puzzleGameCardTypes";
+import { LinkGameCardTypes } from "../stage2/linkGameCardTypes";
+import { PuzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
 
 type DataType = {
   rows: number;

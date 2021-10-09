@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import LinkGame from "../scenes/LinkGame";
-import DraggableCard from "../common/DraggableCard";
+import DraggableCard from "./DraggableCard";
 
 type DataType = {
   scene: Phaser.Scene;
