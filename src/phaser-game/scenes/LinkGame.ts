@@ -1,52 +1,71 @@
 import Phaser from "phaser";
 import Grid from "../common/Grid";
 
-import GoBackButton from "../common/GoBackButton";
 import DraggablePoint from "../stage2/DraggablePoint";
 import { linkGameCardTypes } from "../stage2/linkGameCardTypes";
+import { sceneEvenets } from "../events/EventsManager";
 
-interface Test extends Phaser.Scene {
-  drawLine(this: LinkGame, point: Phaser.GameObjects.Sprite): void;
+enum GameState {
+  Playing,
+  GameOver,
 }
-export default class LinkGame extends Phaser.Scene implements Test {
+
+const TOTAL_TARGET_SCORE = 8;
+
+export default class LinkGame extends Phaser.Scene {
   private grid!: Grid;
   private drawing!: boolean;
+
   private line!: Phaser.Geom.Line;
-  private goBackbutton!: GoBackButton;
-  private background!: Phaser.GameObjects.Image;
+  private state = GameState.Playing;
   private graphics!: Phaser.GameObjects.Graphics;
+
   private completedLines: Phaser.Geom.Line[] = [];
   private _points: Phaser.GameObjects.Sprite[] = [];
 
   constructor() {
-    super("linkGame");
+    super("link-game");
+  }
+
+  init() {
+    this.state = GameState.Playing;
+
+    this.drawing = false;
+    this.completedLines = [];
+
+    this.add.image(0, 0, "background3").setOrigin(0, 0);
+    this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xef524f } });
   }
 
   create() {
-    const grid = new Grid({
+    this.scene.run("status-bar", {
+      scene: this,
+      game: "link-game",
+      totalScore: TOTAL_TARGET_SCORE,
+    });
+
+    this.grid = new Grid({
       scene: this,
       rows: 4,
       columns: 3,
       xStart: 150,
-      yStart: 480,
+      yStart: 500,
       xOffset: 260,
       yOffset: 120,
-      game: "linkGame",
+      game: "link-game",
       cardTypes: linkGameCardTypes,
       onDragEnd: this.checkCorrection,
     });
 
-    this.grid = grid;
-    this.drawing = false;
-
-    this.background = this.add.image(0, 0, "desk3").setOrigin(0, 0);
-    this.goBackbutton = new GoBackButton(this, 50, 50, "goBack");
-    this.completedLines = [];
-
-    this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xef524f } });
+    this.grid.addCards(0);
+    this.grid.addDraggablePoint(0);
   }
 
   drawLine(this: LinkGame, point: Phaser.GameObjects.Sprite) {
+    if (this.state === GameState.GameOver) {
+      return;
+    }
+
     this.drawing = true;
 
     this.line = new Phaser.Geom.Line(
@@ -62,19 +81,6 @@ export default class LinkGame extends Phaser.Scene implements Test {
     });
   }
 
-  update() {
-    this.graphics.clear();
-
-    for (let i = 0; i < this.completedLines.length; i++) {
-      const line = this.completedLines[i];
-      this.graphics.strokeLineShape(line);
-    }
-
-    if (this.drawing) {
-      this.graphics.strokeLineShape(this.line);
-    }
-  }
-
   checkCorrection(this: Grid, pointer: Phaser.Input.Pointer, point: Phaser.GameObjects.Sprite) {
     const { name, value } = point.parentContainer as DraggablePoint;
 
@@ -87,13 +93,13 @@ export default class LinkGame extends Phaser.Scene implements Test {
         value: targetValue,
       } = targetCard as DraggablePoint;
 
-      const distanceX = Math.abs(pointX - 70 - pointer.upX);
-      const distanceY = Math.abs(pointY - pointer.upY);
-      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+      const dx = Math.abs(pointX - 70 - pointer.upX);
+      const dy = Math.abs(pointY - pointer.upY);
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
       const isCorrect =
-        (value === "blue" && targetValue === "yellow" && name === targetName) ||
-        (value === "yellow" && targetValue === "green" && name === targetName);
+        (value === "green" && targetValue === "yellow" && name === targetName) ||
+        (value === "yellow" && targetValue === "blue" && name === targetName);
 
       if (distance < 50 && isCorrect) {
         const completedLine = new Phaser.Geom.Line(
@@ -103,14 +109,37 @@ export default class LinkGame extends Phaser.Scene implements Test {
           pointY
         );
 
+        point.disableInteractive();
+
         (this.scene as LinkGame).completedLines.push(completedLine);
+        sceneEvenets.emit("get-point", (this.scene as LinkGame).completedLines.length);
       }
+    }
+
+    if ((this.scene as LinkGame).completedLines.length === TOTAL_TARGET_SCORE) {
+      sceneEvenets.emit("gameover");
+
+      (this.scene as LinkGame).scene.pause("link-game");
+      (this.scene as LinkGame).state = GameState.GameOver;
     }
 
     point.x = point.data.get("originalX");
     point.y = point.data.get("originalY");
 
     (this.scene as LinkGame).drawing = false;
+  }
+
+  update() {
+    this.graphics.clear();
+
+    for (let i = 0; i < this.completedLines.length; i++) {
+      const line = this.completedLines[i];
+      this.graphics.strokeLineShape(line);
+    }
+
+    if (this.drawing) {
+      this.graphics.strokeLineShape(this.line);
+    }
   }
 
   get points(): Phaser.GameObjects.Sprite[] {
