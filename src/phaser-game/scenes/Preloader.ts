@@ -8,36 +8,42 @@ export default class Preloader extends Phaser.Scene {
   preload() {
     this.load.baseURL = process.env.PROD_URL;
 
-    this.load.image("desk1", "/background/desk1.png");
-    this.load.image("desk2", "/background/desk2.png");
-    this.load.image("desk3", "/background/desk3.png");
+    this.load.image("background1", "/background/desk1.png");
+    this.load.image("background2", "/background/desk2.png");
+    this.load.image("background3", "/background/desk3.png");
+    this.load.image("dddd", "/background/dddd.png");
+
     this.load.image("stages", "/background/stages.png");
     this.load.image("stage1", "/background/stage1.png");
     this.load.image("stage2", "/background/stage2.png");
     this.load.image("stage3", "/background/stage3.png");
+    this.load.image("goBack", "/game/goBackButton.png");
 
-    this.load.image("ball", "/game/ball.png");
-    this.load.image("point", "/game/point.png");
+    this.load.image("star", "/game/star.png");
+    this.load.image("star-empty", "/game/star-empty.png");
+
     this.load.image("board", "/game/board.png");
+    this.load.image("point", "/game/point.png");
     this.load.image("cannon", "/game/cannon.png");
     this.load.image("box-blue", "/game/box-blue.png");
     this.load.image("box-green", "/game/box-green.png");
     this.load.image("box-yellow", "/game/box-yellow.png");
-    this.load.image("goBack", "/game/goBackButton.png");
 
     this.load.image("card", "/card/card.png");
+
     this.load.image("kiwi-1", "/card/kiwi1.png");
     this.load.image("kiwi-2", "/card/kiwi2.png");
     this.load.image("kiwi-3", "/card/kiwi3.png");
     this.load.image("orange-1", "/card/orange1.png");
     this.load.image("orange-2", "/card/orange2.png");
     this.load.image("orange-3", "/card/orange3.png");
-    this.load.image("music-blue", "/card/music-blue.png");
-    this.load.image("music-green", "/card/music-green.png");
-    this.load.image("music-yellow", "/card/music-yellow.png");
     this.load.image("strawberry-1", "/card/strawberry1.png");
     this.load.image("strawberry-2", "/card/strawberry2.png");
     this.load.image("strawberry-3", "/card/strawberry3.png");
+
+    this.load.image("music-blue", "/card/music-blue.png");
+    this.load.image("music-green", "/card/music-green.png");
+    this.load.image("music-yellow", "/card/music-yellow.png");
     this.load.image("trophy-blue", "/card/trophy-blue.png");
     this.load.image("trophy-green", "/card/trophy-green.png");
     this.load.image("trophy-yellow", "/card/trophy-yellow.png");
@@ -79,6 +85,6 @@ export default class Preloader extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.scene.start("shootingGame");
+    this.scene.start("stages");
   }
 }
