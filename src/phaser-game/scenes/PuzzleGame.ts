@@ -3,28 +3,45 @@ import Phaser from "phaser";
 import Grid from "../common/Grid";
 import GameBoard from "../stage1/GameBoard";
 import hitArea from "../stage1/puzzleHitArea";
-import GoBackButton from "../common/GoBackButton";
-import DraggableCard from "../common/DraggableCard";
+import DraggableCard from "../stage1/DraggableCard";
+
+import { sceneEvenets } from "../events/EventsManager";
 import { puzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
 
+const TOTAL_TARGET_SCORE = 9;
+
+enum GameState {
+  Playing,
+  GameOver,
+}
 export default class PuzzleGame extends Phaser.Scene {
+  private state = GameState.Playing;
   private grid!: Grid;
-  private goBackbutton!: GoBackButton;
-  private background!: Phaser.GameObjects.Image;
 
   constructor() {
-    super("puzzleGame");
+    super("puzzle-game");
+  }
+
+  init() {
+    this.state = GameState.Playing;
+    this.add.image(0, 0, "background1").setOrigin(0, 0);
   }
 
   create() {
-    this.background = this.add.image(0, 0, "desk1").setOrigin(0, 0);
+    this.scene.run("status-bar", {
+      scene: this,
+      game: "puzzle-game",
+      totalScore: TOTAL_TARGET_SCORE,
+    });
 
-    const board = new GameBoard(this, 30, 30);
-    this.add.existing(board);
+    this.createGameboard();
+    this.grid.addDraggableCards(0);
+  }
 
-    this.goBackbutton = new GoBackButton(this, 50, 50, "goBack");
+  private createGameboard() {
+    new GameBoard(this, 30, 60);
 
-    const grid = new Grid({
+    this.grid = new Grid({
       scene: this,
       rows: 5,
       columns: 1,
@@ -32,43 +49,44 @@ export default class PuzzleGame extends Phaser.Scene {
       yStart: 460,
       xOffset: 650,
       yOffset: 110,
-      game: "puzzleGame",
+      game: "puzzle-game",
       cardTypes: puzzleGameCardTypes,
-      onDragEnd: this.checkCoordinates,
+      onDragEnd: this.checkCorrection,
     });
-
-    this.grid = grid;
   }
 
-  checkCoordinates<P, D extends DraggableCard>(this: Grid, pointer: P, gameObject: D) {
+  checkCorrection<P, D extends DraggableCard>(this: Grid, pointer: P, gameObject: D) {
     for (let i = 0; i < hitArea.length; i++) {
       const area = hitArea[i];
       const { fruit, value } = gameObject;
 
-      const distanceX = Math.abs(area.pointX - gameObject.x);
-      const distanceY = Math.abs(area.pointY - gameObject.y);
       const isCorrect = area.name === fruit + "-" + value;
 
-      if (distanceX < 60 && distanceY < 60 && isCorrect) {
+      const dx = Math.abs(area.pointX - gameObject.x);
+      const dy = Math.abs(area.pointY - gameObject.y);
+
+      if (dx < 60 && dy < 60 && isCorrect) {
         gameObject.depth = 0;
         gameObject.disableInteractive();
 
         gameObject.originalX = area.pointX;
         gameObject.originalY = area.pointY;
 
-        const order = this.cards.findIndex((card) => {
-          return card.name === gameObject.name;
-        });
-
-        this.completedCards++;
+        const order = this.cards.findIndex((card) => card.name === gameObject.name);
 
         this.removeCompletedCard(order);
         this.moveCardsDown(order);
 
-        if (this.completedCards === puzzleGameCardTypes.length) {
-          // addRestartButton();
-        }
+        this.completedCards++;
+        sceneEvenets.emit("get-point", this.completedCards);
       }
+    }
+
+    if (this.completedCards === TOTAL_TARGET_SCORE) {
+      (this.scene as PuzzleGame).state = GameState.GameOver;
+
+      this.scene.scene.pause("puzzle-game");
+      sceneEvenets.emit("gameover");
     }
 
     gameObject.x = gameObject.originalX;

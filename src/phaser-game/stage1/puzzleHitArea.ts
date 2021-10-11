@@ -8,47 +8,47 @@ const hitArea: Area[] = [
   {
     name: "strawberry-1",
     pointX: 235,
-    pointY: 225,
+    pointY: 255,
   },
   {
     name: "strawberry-2",
     pointX: 235,
-    pointY: 337,
+    pointY: 367,
   },
   {
     name: "strawberry-3",
     pointX: 235,
-    pointY: 450,
+    pointY: 480,
   },
   {
     name: "kiwi-1",
     pointX: 460,
-    pointY: 225,
+    pointY: 255,
   },
   {
     name: "kiwi-2",
     pointX: 460,
-    pointY: 337,
+    pointY: 367,
   },
   {
     name: "kiwi-3",
     pointX: 460,
-    pointY: 450,
+    pointY: 480,
   },
   {
     name: "orange-1",
     pointX: 347,
-    pointY: 225,
+    pointY: 255,
   },
   {
     name: "orange-2",
     pointX: 347,
-    pointY: 337,
+    pointY: 367,
   },
   {
     name: "orange-3",
     pointX: 347,
-    pointY: 450,
+    pointY: 480,
   },
 ];
 
