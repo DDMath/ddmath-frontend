@@ -5,7 +5,6 @@ import ShotPreview from "./ShotPreview";
 
 export default class Cannon extends Phaser.Physics.Arcade.Sprite {
   private shotPreview!: ShotPreview;
-  private ball!: Ball;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
     super(scene, x, y, texture);
@@ -25,7 +24,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     const width = this.scene.scale.width;
     const height = this.scene.scale.height;
 
-    const ball = new Ball(this.scene, width / 2, height - 35, "ball");
+    const ball = new Ball(this.scene, width / 2, height - 35, "point");
 
     return ball;
   }

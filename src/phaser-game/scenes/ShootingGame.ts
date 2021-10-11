@@ -3,26 +3,45 @@ import Phaser from "phaser";
 import Ball from "../stage3/Ball";
 import Enemy from "../stage3/Enemy";
 import Cannon from "../stage3/Cannon";
-import GoBackButton from "../common/GoBackButton";
+
+import { sceneEvenets } from "../events/EventsManager";
+
+enum GameState {
+  Playing,
+  GameOver,
+}
+
+const TOTAL_ENEMY_NUMBER = 10;
 
 export default class ShootingGame extends Phaser.Scene {
-  private goBackbutton!: GoBackButton;
-  private background!: Phaser.GameObjects.Image;
-
   private order!: number;
-
-  private ball?: Ball;
   private cannon!: Cannon;
   private enemies: Enemy[] = [];
+
+  private state = GameState.Playing;
   private enemyGroup!: Phaser.Physics.Arcade.Group;
 
   constructor() {
-    super("shootingGame");
+    super("shooting-game");
+  }
+
+  init() {
+    this.add.image(0, 0, "background2").setOrigin(0, 0);
+
+    this.order = 1;
+    this.state = GameState.Playing;
+
+    this.createEnemyGroup();
+
+    this.input.on("pointerup", this.handlePointerUp, this);
   }
 
   create() {
-    this.background = this.add.image(0, 0, "desk2").setOrigin(0, 0);
-    this.goBackbutton = new GoBackButton(this, 50, 50, "goBack");
+    this.scene.run("status-bar", {
+      scene: this,
+      game: "shooting-game",
+      totalScore: TOTAL_ENEMY_NUMBER,
+    });
 
     const width = this.scale.width;
     const height = this.scale.height;
@@ -30,25 +49,19 @@ export default class ShootingGame extends Phaser.Scene {
     this.cannon = new Cannon(this, width / 2, height - 35, "cannon").setDepth(3);
     this.cannon.setShotPreview();
 
-    this.enemyGroup = this.physics.add.group({
-      bounceX: 1,
-      bounceY: 1,
-      velocityX: 150,
-      velocityY: -50,
-      maxVelocityX: 300,
-      collideWorldBounds: true,
-    });
-
     this.createEnemies(this.enemyGroup);
 
-    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
-    this.physics.add.collider(this.enemyGroup, this.cannon);
+    this.physics.world.setBounds(0, 50, width, height - 50);
 
-    this.input.on("pointerup", this.handlePointerUp, this);
-    this.order = 1;
+    this.physics.add.collider(this.enemyGroup, this.cannon);
+    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
   }
 
-  handlePointerUp() {
+  private handlePointerUp() {
+    if (this.state === GameState.GameOver) {
+      return;
+    }
+
     const ball = this.cannon.loadBall();
 
     this.cannon.shoot(ball);
@@ -57,8 +70,19 @@ export default class ShootingGame extends Phaser.Scene {
     this.cannon.getShotPreview.removePreviousPreview();
   }
 
-  createEnemies(enemyGroup: Phaser.Physics.Arcade.Group) {
-    for (let i = 0; i < 10; i++) {
+  private createEnemyGroup() {
+    this.enemyGroup = this.physics.add.group({
+      bounceX: 1,
+      bounceY: 1,
+      velocityX: 150,
+      velocityY: -50,
+      maxVelocityX: 300,
+      collideWorldBounds: true,
+    });
+  }
+
+  private createEnemies(enemyGroup: Phaser.Physics.Arcade.Group) {
+    for (let i = 0; i < TOTAL_ENEMY_NUMBER; i++) {
       const enemy = new Enemy(this, Math.random() * 200 + 300, Math.random() * 100, i + 1);
 
       enemyGroup.add(enemy).setVelocity(50, -150);
@@ -66,7 +90,7 @@ export default class ShootingGame extends Phaser.Scene {
     }
   }
 
-  checkCollision(ball: Ball) {
+  private checkCollision(ball: Ball) {
     this.physics.add.collider(ball, this.enemyGroup, (ball, enemy) => {
       (ball as Ball).destroy();
 
@@ -75,7 +99,16 @@ export default class ShootingGame extends Phaser.Scene {
       }
 
       (enemy as Enemy).getDamage();
+      sceneEvenets.emit("get-point", this.order);
+
       this.order++;
+
+      if (this.order === TOTAL_ENEMY_NUMBER + 1) {
+        this.state = GameState.GameOver;
+
+        this.scene.pause("shooting-game");
+        sceneEvenets.emit("gameover");
+      }
     });
   }
 
