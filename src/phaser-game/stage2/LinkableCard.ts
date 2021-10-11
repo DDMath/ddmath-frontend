@@ -1,4 +1,5 @@
-import BaseCard from "../common/BaseCard";
+import Phaser from "phaser";
+import CardBase from "../common/CardBase";
 
 type CardData = {
   x: number;
@@ -10,28 +11,25 @@ type CardData = {
   ondragend(pointer: Phaser.Input.Pointer, gameObject: LinkableCard): void;
 };
 
-export default class LinkableCard extends BaseCard {
-  private linkable: boolean;
-
+export default class LinkableCard extends CardBase {
   constructor(data: CardData) {
     const { scene, ondragend } = data;
 
     super(data);
 
-    this.linkable = true;
     this.setInteractive();
 
     this.scene.input.on(
       "drag",
-      (pointer: Phaser.Input.Pointer, gameObject: BaseCard, dragX: number, dragY: number) => {
+      (pointer: Phaser.Input.Pointer, gameObject: CardBase, dragX: number, dragY: number) => {
         if (this.name !== gameObject.name) {
           return;
         }
 
-        const xDiff = Math.abs(gameObject.x - dragX);
-        const yDiff = Math.abs(gameObject.y - dragY);
+        const dx = Math.abs(gameObject.x - dragX);
+        const dy = Math.abs(gameObject.y - dragY);
 
-        if (!xDiff && !yDiff) {
+        if (!dx && !dy) {
           return;
         }
 

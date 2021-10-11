@@ -14,10 +14,9 @@ type PointData = {
 export default class DraggablePoint extends Phaser.GameObjects.Container {
   public name: string;
   public value: string | number;
-  private image: string;
 
   constructor(data: PointData) {
-    const { x, y, name, value, image, scene, ondragend } = data;
+    const { x, y, name, value, scene, ondragend } = data;
 
     const pointImage = new Phaser.GameObjects.Image(scene, 70, 0, "point");
     const leftPoint = new Phaser.GameObjects.Sprite(scene, -70, 0, "point");
@@ -30,7 +29,6 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
 
     this.name = name;
     this.value = value;
-    this.image = image;
 
     (scene as LinkGame).addNewPoint = leftPoint;
 
@@ -39,14 +37,16 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     rightPoint.data.set("originalX", 70);
     rightPoint.data.set("originalY", 0);
 
-    if (value === "blue") {
+    if (value === "green") {
       leftPoint.alpha = 0;
     }
 
-    if (value === "green") {
+    if (value === "blue") {
       rightPoint.alpha = 0;
       pointImage.alpha = 0;
     }
+
+    scene.add.existing(this);
 
     this.scene.input.on(
       "drag",
@@ -84,7 +84,5 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
         ondragend(pointer, gameObject);
       }
     );
-
-    scene.add.existing(this);
   }
 }

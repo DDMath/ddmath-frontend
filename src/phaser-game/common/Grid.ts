@@ -1,10 +1,11 @@
 import Phaser from "phaser";
-import DraggableCard from "./DraggableCard";
+import DraggableCard from "../stage1/DraggableCard";
 import DraggablePoint from "../stage2/DraggablePoint";
 import shuffleArray from "../../utils/shuffleArray";
 
 import { LinkGameCardTypes } from "../stage2/linkGameCardTypes";
 import { PuzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
+import CardBase from "./CardBase";
 
 type DataType = {
   rows: number;
@@ -14,7 +15,7 @@ type DataType = {
   xOffset: number;
   yOffset: number;
   scene: Phaser.Scene;
-  game: "puzzleGame" | "linkGame";
+  game: "puzzle-game" | "link-game";
   cardTypes: PuzzleGameCardTypes[] | LinkGameCardTypes[];
   onDragEnd(
     pointer: Phaser.Input.Pointer,
@@ -23,7 +24,6 @@ type DataType = {
 };
 
 export default class Grid {
-  private game: string;
   private rows: number;
   private columns: number;
   private xStart: number;
@@ -43,8 +43,7 @@ export default class Grid {
   ) => void;
 
   constructor(data: DataType) {
-    const { scene, rows, columns, xOffset, yOffset, xStart, yStart, cardTypes, onDragEnd, game } =
-      data;
+    const { scene, rows, columns, xOffset, yOffset, xStart, yStart, cardTypes, onDragEnd } = data;
 
     this.scene = scene;
     this.rows = rows;
@@ -57,15 +56,29 @@ export default class Grid {
 
     this.onDragEnd = onDragEnd;
     this.cardTypes = cardTypes;
-    this.game = game;
 
-    const numberArray = new Array(this.cardTypes.length).fill(null).map((_, i) => i);
-    this.cardOrder = this.cardOrder = shuffleArray<number[]>(numberArray, this.columns);
-
-    this.addCards(0);
+    this.cardOrder = this.createCardOrder();
   }
 
-  addCards(startIndex: number = this.columns * this.rows - 1) {
+  public addCards(startIndex: number = this.columns * this.rows - 1) {
+    for (let i = startIndex; i < this.columns * this.rows; i++) {
+      const cardType = this.cardTypes[this.cardOrder[i] || 0];
+
+      const card = new CardBase({
+        scene: this.scene,
+        x: this.xStart + this.xOffset * Math.floor(i / this.rows),
+        y: this.yStart - this.yOffset * (i % this.rows),
+        name: cardType.name,
+        image: cardType.image,
+        value: cardType.value,
+      });
+
+      card.depth = 1;
+      this.cards.push(card);
+    }
+  }
+
+  public addDraggableCards(startIndex: number = this.columns * this.rows - 1) {
     for (let i = startIndex; i < this.columns * this.rows; i++) {
       const cardType = this.cardTypes[this.cardOrder.pop() || 0];
 
@@ -74,7 +87,6 @@ export default class Grid {
         x: this.xStart + this.xOffset * Math.floor(i / this.rows),
         y: this.yStart - this.yOffset * (i % this.rows),
         name: cardType.name,
-        game: this.game,
         image: cardType.image,
         value: cardType.value,
         ondragend: (pointer: Phaser.Input.Pointer, gameObject: DraggableCard) => {
@@ -84,26 +96,30 @@ export default class Grid {
 
       card.depth = 1;
       this.cards.push(card);
-
-      if (this.game === "linkGame") {
-        const point = new DraggablePoint({
-          scene: this.scene,
-          x: this.xStart + this.xOffset * Math.floor(i / this.rows),
-          y: this.yStart - this.yOffset * (i % this.rows),
-          name: cardType.name,
-          image: cardType.image,
-          value: cardType.value,
-          ondragend: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
-            this.onDragEnd(pointer, gameObject);
-          },
-        });
-
-        point.depth = 2;
-      }
     }
   }
 
-  moveCardsDown(index: number) {
+  public addDraggablePoint(startIndex: number = this.columns * this.rows - 1) {
+    for (let i = startIndex; i < this.columns * this.rows; i++) {
+      const cardType = this.cardTypes[this.cardOrder[i] || 0];
+
+      const point = new DraggablePoint({
+        scene: this.scene,
+        name: cardType.name,
+        image: cardType.image,
+        value: cardType.value,
+        x: this.xStart + this.xOffset * Math.floor(i / this.rows),
+        y: this.yStart - this.yOffset * (i % this.rows),
+        ondragend: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
+          this.onDragEnd(pointer, gameObject);
+        },
+      });
+
+      point.depth = 2;
+    }
+  }
+
+  public moveCardsDown(index: number) {
     this.cards.forEach((card, i) => {
       if (index > i) {
         return;
@@ -118,12 +134,18 @@ export default class Grid {
       });
     });
 
-    if (this.completedCards + this.cards.length < this.cardTypes.length) {
-      setTimeout(() => this.addCards(), 300);
+    if (this.completedCards + this.cards.length < this.cardTypes.length - 1) {
+      setTimeout(() => this.addDraggableCards(), 300);
     }
   }
 
-  removeCompletedCard(order: number) {
+  private createCardOrder(): number[] {
+    const numberArray = new Array(this.cardTypes.length).fill(null).map((_, i) => i);
+
+    return shuffleArray<number[]>(numberArray, this.columns);
+  }
+
+  public removeCompletedCard(order: number) {
     this.cards = this.cards.filter((card, index) => order !== index);
   }
 
