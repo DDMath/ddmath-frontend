@@ -1,19 +1,18 @@
 import Phaser from "phaser";
 import LinkGame from "../scenes/LinkGame";
-import DraggableCard from "./DraggableCard";
+import DraggableCard from "../stage1/DraggableCard";
 
-type DataType = {
+interface DataType {
   scene: Phaser.Scene;
   x: number;
   y: number;
   name: string;
   image: string;
   value: string | number;
-};
+}
 
-export default class BaseCard extends Phaser.GameObjects.Container {
+export default class CardBase extends Phaser.GameObjects.Container {
   private spriteCard: Phaser.GameObjects.Sprite;
-  private spriteImage: Phaser.GameObjects.Sprite;
   private _originalX!: number;
   private _originalY!: number;
   public value: string | number;
@@ -34,7 +33,6 @@ export default class BaseCard extends Phaser.GameObjects.Container {
     spriteImage.angle = scene instanceof LinkGame ? randomDegree : 0;
 
     this.spriteCard = spriteCard;
-    this.spriteImage = spriteImage;
 
     this.name = name;
     this.scene = scene;
