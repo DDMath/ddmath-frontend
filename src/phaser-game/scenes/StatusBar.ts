@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import GoBackButton from "../common/GoBackButton";
-import { sceneEvenets } from "../events/EventsManager";
+import { sceneEvents } from "../events/EventsManager";
 
 interface StatusBarData {
   scene: Phaser.Scene;
@@ -25,10 +25,10 @@ export default class StatusBar extends Phaser.Scene {
     this.gameName = game;
     this.targetScore = totalScore;
 
-    sceneEvenets.on("get-point", this.increaseOnePoint, this);
+    sceneEvents.on("get-point", this.increaseOnePoint, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      sceneEvenets.off("get-point", this.increaseOnePoint);
+      sceneEvents.off("get-point", this.increaseOnePoint);
     });
   }
 
