@@ -7,6 +7,7 @@ import StatusBar from "./scenes/StatusBar";
 import Preloader from "./scenes/Preloader";
 import PuzzleGame from "./scenes/PuzzleGame";
 import ShootingGame from "./scenes/ShootingGame";
+import StagesStatusBar from "./scenes/StagesStatusBar";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -18,7 +19,17 @@ export const config: Phaser.Types.Core.GameConfig = {
       gravity: { y: 30 },
     },
   },
+  title: "DD Math",
   parent: "game-container",
   backgroundColor: "#333333",
-  scene: [Preloader, Stages, PuzzleGame, LinkGame, ShootingGame, StatusBar, GameOver],
+  scene: [
+    Preloader,
+    Stages,
+    PuzzleGame,
+    LinkGame,
+    ShootingGame,
+    StagesStatusBar,
+    StatusBar,
+    GameOver,
+  ],
 };
