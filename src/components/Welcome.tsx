@@ -1,16 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useHistory } from "react-router";
 
 import StartButton from "./StartButton";
+import { googleLogin } from "../apis";
 import { fullWidthAndHeight } from "./styles/mixin";
 
 function Welcome() {
+  const history = useHistory();
+
+  async function handleLogin() {
+    try {
+      const userInfo = await googleLogin();
+
+      if (userInfo) {
+        history.push("/stages");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Wrapper>
-      <Link to="/stages">
-        <StartButton />
-      </Link>
+      <StartButton onClick={handleLogin} />
     </Wrapper>
   );
 }
