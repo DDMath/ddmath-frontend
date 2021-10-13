@@ -49,6 +49,17 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     scene.add.existing(this);
 
     this.scene.input.on(
+      "dragstart",
+      (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite) => {
+        if (this !== gameObject.parentContainer) {
+          return;
+        }
+
+        this.scene.sound.play("jump", { volume: 0.5 });
+      }
+    );
+
+    this.scene.input.on(
       "drag",
       (
         pointer: Phaser.Input.Pointer,

@@ -1,4 +1,6 @@
 import Phaser from "phaser";
+import { getUserData } from "~/apis";
+import { sceneEvents } from "../events/EventsManager";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -6,7 +8,7 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
-    this.load.baseURL = process.env.PROD_URL;
+    this.load.baseURL = process.env.PROD_URL || "http://localhost:3000";
 
     this.load.image("background1", "/background/desk1.png");
     this.load.image("background2", "/background/desk2.png");
@@ -21,6 +23,12 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.image("star", "/game/star.png");
     this.load.image("star-empty", "/game/star-empty.png");
+
+    this.load.image("lock", "/game/lock.png");
+    this.load.image("logout", "/game/logout.png");
+    this.load.image("sound-on", "/game/sound-on.png");
+    this.load.image("sound-off", "/game/sound-off.png");
+    this.load.image("user-info", "/game/user-info.png");
 
     this.load.image("board", "/game/board.png");
     this.load.image("point", "/game/point.png");
@@ -54,11 +62,21 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("star-green", "/card/star-green.png");
     this.load.image("star-yellow", "/card/star-yellow.png");
 
+    this.load.audio("pop", "/sound/pop.wav");
+    this.load.audio("jump", "/sound/jump.wav");
+    this.load.audio("beep", "/sound/beep.wav");
+    this.load.audio("click", "/sound/click.wav");
+    this.load.audio("correct", "/sound/correct.mp3");
+    this.load.audio("background-music", "/sound/background-music.mp3");
+
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-stand", "/character/stand.png", "/character/stand.json");
   }
 
   create() {
+    const scene = this;
+    const sceneManager = this.scene;
+
     this.anims.create({
       key: "character-stand",
       frames: this.anims.generateFrameNames("character-stand", {
@@ -85,6 +103,32 @@ export default class Preloader extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.scene.start("stages");
+    const music = this.sound.add("background-music", {
+      loop: true,
+      volume: 0.3,
+    });
+
+    music.play();
+
+    sceneEvents.on("toggleBackgroundMusic", () => {
+      if (music.isPlaying) {
+        music.pause();
+      } else {
+        music.resume();
+      }
+    });
+
+    async function authCheck() {
+      const user = await getUserData();
+
+      if (user) {
+        scene.registry.set("user", user);
+
+        sceneManager.start("stages");
+        sceneManager.run("stages-status-bar", { user });
+      }
+    }
+
+    authCheck();
   }
 }

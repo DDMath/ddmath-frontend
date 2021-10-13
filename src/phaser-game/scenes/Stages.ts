@@ -1,8 +1,11 @@
 import Phaser from "phaser";
+import { sceneEvents } from "../events/EventsManager";
 
 export default class Stages extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private character!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+
+  public lastStage?: number;
 
   constructor() {
     super("stages");
@@ -15,6 +18,10 @@ export default class Stages extends Phaser.Scene {
     this.createCharacter();
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    sceneEvents.on("logout", this.handleLogout, this);
+
+    this.handleSceneEventsOff();
   }
 
   createCharacter() {
@@ -28,31 +35,44 @@ export default class Stages extends Phaser.Scene {
   }
 
   createButtons() {
-    const spriteStage1 = new Phaser.GameObjects.Sprite(this, 50, 365, "stage1").setOrigin(0, 0);
-    const spriteStage2 = new Phaser.GameObjects.Sprite(this, 250, 365, "stage2").setOrigin(0, 0);
-    const spriteStage3 = new Phaser.GameObjects.Sprite(this, 450, 365, "stage3").setOrigin(0, 0);
+    const { lastStage } = this.registry.get("user");
 
-    spriteStage1.setInteractive();
-    spriteStage2.setInteractive();
-    spriteStage3.setInteractive();
+    for (let i = 0; i <= lastStage; i++) {
+      const button = new Phaser.GameObjects.Sprite(this, 50 + 200 * i, 365, `stage${i + 1}`);
 
-    this.add.existing(spriteStage1);
-    this.add.existing(spriteStage2);
-    this.add.existing(spriteStage3);
+      button.setOrigin(0, 0).setInteractive();
+      this.add.existing(button);
 
-    spriteStage1.on("pointerdown", () => this.scene.start("puzzle-game"));
-    spriteStage1.on("pointerover", () => spriteStage1.setTint(0xf8edeb));
-    spriteStage1.on("pointerout", () => spriteStage1.clearTint());
+      const games = ["puzzle-game", "link-game", "shooting-game"];
 
-    spriteStage2.on("pointerdown", () =>
-      this.scene.start("link-game", { totalScore: 8, game: "link-game" })
-    );
-    spriteStage2.on("pointerover", () => spriteStage2.setTint(0xf8edeb));
-    spriteStage2.on("pointerout", () => spriteStage2.clearTint());
+      button.on("pointerdown", () => {
+        this.scene.start(games[i]);
+        this.scene.stop("stages-status-bar");
+      });
 
-    spriteStage3.on("pointerdown", () => this.scene.start("shooting-game"));
-    spriteStage3.on("pointerover", () => spriteStage3.setTint(0xf8edeb));
-    spriteStage3.on("pointerout", () => spriteStage3.clearTint());
+      button.on("pointerover", () => button.setTint(0xf8edeb));
+      button.on("pointerout", () => button.clearTint());
+    }
+
+    for (let i = lastStage + 1; i < 3; i++) {
+      const lockedButton = new Phaser.GameObjects.Sprite(this, 50 + 200 * i, 365, "lock");
+
+      lockedButton.setOrigin(0, 0);
+      this.add.existing(lockedButton);
+    }
+  }
+
+  handleLogout() {
+    localStorage.removeItem("accessToken");
+    this.registry.remove("user");
+
+    window.location.href = "/";
+  }
+
+  handleSceneEventsOff() {
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      sceneEvents.off("logout", this.handleLogout);
+    });
   }
 
   update() {
@@ -60,6 +80,7 @@ export default class Stages extends Phaser.Scene {
 
     if (this.cursors.right.isDown) {
       const velocity = 100;
+
       this.character.play("character-run", true);
       this.character.setVelocityX(velocity);
     } else if (this.cursors.left.isDown) {

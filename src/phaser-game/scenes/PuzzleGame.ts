@@ -5,7 +5,8 @@ import GameBoard from "../stage1/GameBoard";
 import hitArea from "../stage1/puzzleHitArea";
 import DraggableCard from "../stage1/DraggableCard";
 
-import { sceneEvenets } from "../events/EventsManager";
+import { updateFinalStageRecord } from "~/apis";
+import { sceneEvents } from "../events/EventsManager";
 import { puzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
 
 const TOTAL_TARGET_SCORE = 9;
@@ -56,6 +57,12 @@ export default class PuzzleGame extends Phaser.Scene {
   }
 
   checkCorrection<P, D extends DraggableCard>(this: Grid, pointer: P, gameObject: D) {
+    if ((this.scene as PuzzleGame).state === GameState.GameOver) {
+      return;
+    }
+
+    let shouldTurnOnBeep = true;
+
     for (let i = 0; i < hitArea.length; i++) {
       const area = hitArea[i];
       const { fruit, value } = gameObject;
@@ -78,15 +85,22 @@ export default class PuzzleGame extends Phaser.Scene {
         this.moveCardsDown(order);
 
         this.completedCards++;
-        sceneEvenets.emit("get-point", this.completedCards);
+        sceneEvents.emit("get-point", this.completedCards);
+
+        shouldTurnOnBeep = false;
+        (this.scene as PuzzleGame).sound.play("correct", { volume: 0.2 });
       }
+    }
+
+    if (shouldTurnOnBeep) {
+      (this.scene as PuzzleGame).sound.play("beep", { volume: 0.2 });
     }
 
     if (this.completedCards === TOTAL_TARGET_SCORE) {
       (this.scene as PuzzleGame).state = GameState.GameOver;
 
-      this.scene.scene.pause("puzzle-game");
-      sceneEvenets.emit("gameover");
+      sceneEvents.emit("gameover");
+      updateFinalStageRecord("puzzle-game");
     }
 
     gameObject.x = gameObject.originalX;

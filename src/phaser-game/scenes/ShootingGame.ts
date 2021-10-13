@@ -4,7 +4,8 @@ import Ball from "../stage3/Ball";
 import Enemy from "../stage3/Enemy";
 import Cannon from "../stage3/Cannon";
 
-import { sceneEvenets } from "../events/EventsManager";
+import { sceneEvents } from "../events/EventsManager";
+import { updateFinalStageRecord } from "~/apis";
 
 enum GameState {
   Playing,
@@ -62,6 +63,8 @@ export default class ShootingGame extends Phaser.Scene {
       return;
     }
 
+    this.sound.play("click", { volume: 0.3 });
+
     const ball = this.cannon.loadBall();
 
     this.cannon.shoot(ball);
@@ -99,15 +102,16 @@ export default class ShootingGame extends Phaser.Scene {
       }
 
       (enemy as Enemy).getDamage();
-      sceneEvenets.emit("get-point", this.order);
+      sceneEvents.emit("get-point", this.order);
 
       this.order++;
+      this.sound.play("pop", { volume: 0.3 });
 
       if (this.order === TOTAL_ENEMY_NUMBER + 1) {
         this.state = GameState.GameOver;
 
-        this.scene.pause("shooting-game");
-        sceneEvenets.emit("gameover");
+        sceneEvents.emit("gameover");
+        updateFinalStageRecord("shooting-game");
       }
     });
   }

@@ -3,7 +3,8 @@ import Grid from "../common/Grid";
 
 import DraggablePoint from "../stage2/DraggablePoint";
 import { linkGameCardTypes } from "../stage2/linkGameCardTypes";
-import { sceneEvenets } from "../events/EventsManager";
+import { sceneEvents } from "../events/EventsManager";
+import { updateFinalStageRecord } from "~/apis";
 
 enum GameState {
   Playing,
@@ -83,6 +84,7 @@ export default class LinkGame extends Phaser.Scene {
 
   checkCorrection(this: Grid, pointer: Phaser.Input.Pointer, point: Phaser.GameObjects.Sprite) {
     const { name, value } = point.parentContainer as DraggablePoint;
+    let shouldTurnOnBeep = true;
 
     for (let i = 0; i < (this.scene as LinkGame).points.length; i++) {
       const targetCard = (this.scene as LinkGame).points[i].parentContainer;
@@ -112,21 +114,28 @@ export default class LinkGame extends Phaser.Scene {
         point.disableInteractive();
 
         (this.scene as LinkGame).completedLines.push(completedLine);
-        sceneEvenets.emit("get-point", (this.scene as LinkGame).completedLines.length);
+        sceneEvents.emit("get-point", (this.scene as LinkGame).completedLines.length);
+
+        shouldTurnOnBeep = false;
+        (this.scene as LinkGame).sound.play("correct", { volume: 0.2 });
       }
     }
 
-    if ((this.scene as LinkGame).completedLines.length === TOTAL_TARGET_SCORE) {
-      sceneEvenets.emit("gameover");
-
-      (this.scene as LinkGame).scene.pause("link-game");
-      (this.scene as LinkGame).state = GameState.GameOver;
+    if (shouldTurnOnBeep) {
+      (this.scene as LinkGame).sound.play("beep", { volume: 0.2 });
     }
 
     point.x = point.data.get("originalX");
     point.y = point.data.get("originalY");
 
     (this.scene as LinkGame).drawing = false;
+
+    if ((this.scene as LinkGame).completedLines.length === TOTAL_TARGET_SCORE) {
+      (this.scene as LinkGame).state = GameState.GameOver;
+
+      sceneEvents.emit("gameover");
+      updateFinalStageRecord("link-game");
+    }
   }
 
   update() {

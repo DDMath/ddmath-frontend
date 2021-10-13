@@ -1,11 +1,15 @@
 import Phaser from "phaser";
+import { getUserData } from "~/apis";
 
+interface IGame {
+  game: string;
+}
 export default class GameOver extends Phaser.Scene {
   constructor() {
     super("game-over");
   }
 
-  create({ game }: { game: string }) {
+  create({ game }: IGame) {
     const { width, height } = this.scale;
 
     const x = width / 2;
@@ -23,12 +27,19 @@ export default class GameOver extends Phaser.Scene {
 
     button.setInteractive();
 
-    button.once("pointerup", () => {
+    button.once("pointerup", async () => {
       this.scene.stop("game-over");
       this.scene.stop("status-bar");
       this.scene.stop(game);
 
-      this.scene.start("stages");
+      const user = await getUserData();
+
+      if (user) {
+        this.registry.set("user", user);
+
+        this.scene.start("stages");
+        this.scene.run("stages-status-bar", { user });
+      }
     });
   }
 }

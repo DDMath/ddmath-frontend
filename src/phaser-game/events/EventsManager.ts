@@ -1,3 +1,3 @@
 import Phaser from "phaser";
 
-export const sceneEvenets = new Phaser.Events.EventEmitter();
+export const sceneEvents = new Phaser.Events.EventEmitter();
