@@ -18,7 +18,7 @@
     "quotes": ["warn", "double"],
     "eol-last": ["warn", "always"],
     "arrow-parens": ["warn", "always"],
-    "react/prop-types": "off",
+    "@typescript-eslint/no-this-alias": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
