@@ -7,9 +7,9 @@ type ButtonProps = {
   children?: JSX.Element | JSX.Element[] | string;
 };
 
-function Button({ children, className, text }: ButtonProps) {
+function Button({ children, className, onClick, text }: ButtonProps) {
   return (
-    <DefaultButton className={className}>
+    <DefaultButton className={className} onClick={onClick}>
       {children}
       {text}
     </DefaultButton>

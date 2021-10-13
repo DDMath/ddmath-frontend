@@ -31,6 +31,15 @@ const DisplayContainer = styled.div`
 
   width: 100vw;
   height: 100vh;
+
+  background: linear-gradient(
+    90deg,
+    hsla(224, 88%, 93%, 1) 0%,
+    hsla(275, 18%, 79%, 1) 15%,
+    hsla(351, 47%, 88%, 1) 47%,
+    hsla(312, 91%, 96%, 1) 74%,
+    hsla(233, 100%, 94%, 1) 100%
+  );
 `;
 
 const Content = styled.div`

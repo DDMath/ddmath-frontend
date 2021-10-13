@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import Button from "./Button";
 
-function StartButton() {
-  return <StyledButton text="시작하기" />;
+function StartButton({ onClick }) {
+  return <StyledButton text="시작하기" onClick={onClick} />;
 }
 
 const StyledButton = styled(Button)`
