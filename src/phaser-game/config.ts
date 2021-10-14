@@ -21,7 +21,7 @@ export const config: Phaser.Types.Core.GameConfig = {
   },
   title: "DD Math",
   parent: "game-container",
-  backgroundColor: "#333333",
+  backgroundColor: "#eae4e9",
   scene: [
     Preloader,
     Stages,

@@ -3,11 +3,35 @@ import { getUserData } from "~/apis";
 import { sceneEvents } from "../events/EventsManager";
 
 export default class Preloader extends Phaser.Scene {
+  private loadingBar!: Phaser.GameObjects.Graphics;
+  private progressBar!: Phaser.GameObjects.Graphics;
+
   constructor() {
     super("preloader");
   }
 
   preload() {
+    this.createLoadingbar();
+
+    this.load.on(
+      "progress",
+      (value: number) => {
+        this.progressBar.clear();
+        this.progressBar.fillStyle(0xfca311, 1);
+        this.progressBar.fillRect(210, 260, 360 * value, 30);
+      },
+      this
+    );
+
+    this.load.on(
+      "complete",
+      () => {
+        this.progressBar.destroy();
+        this.loadingBar.destroy();
+      },
+      this
+    );
+
     this.load.image("background1", "/background/desk1.png");
     this.load.image("background2", "/background/desk2.png");
     this.load.image("background3", "/background/desk3.png");
@@ -127,5 +151,12 @@ export default class Preloader extends Phaser.Scene {
     }
 
     authCheck();
+  }
+
+  private createLoadingbar(): void {
+    this.loadingBar = this.add.graphics();
+    this.loadingBar.fillStyle(0x023047, 1);
+    this.loadingBar.fillRect(200, 250, 380, 50);
+    this.progressBar = this.add.graphics();
   }
 }
