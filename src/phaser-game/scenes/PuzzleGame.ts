@@ -88,12 +88,12 @@ export default class PuzzleGame extends Phaser.Scene {
         sceneEvents.emit("get-point", this.completedCards);
 
         shouldTurnOnBeep = false;
-        (this.scene as PuzzleGame).sound.play("correct", { volume: 0.2 });
+        (this.scene as PuzzleGame).sound.play("correct", { volume: 0.3 });
       }
     }
 
     if (shouldTurnOnBeep) {
-      (this.scene as PuzzleGame).sound.play("beep", { volume: 0.2 });
+      (this.scene as PuzzleGame).sound.play("beep", { volume: 0.3 });
     }
 
     if (this.completedCards === TOTAL_TARGET_SCORE) {

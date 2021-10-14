@@ -117,12 +117,12 @@ export default class LinkGame extends Phaser.Scene {
         sceneEvents.emit("get-point", (this.scene as LinkGame).completedLines.length);
 
         shouldTurnOnBeep = false;
-        (this.scene as LinkGame).sound.play("correct", { volume: 0.2 });
+        (this.scene as LinkGame).sound.play("correct", { volume: 0.3 });
       }
     }
 
     if (shouldTurnOnBeep) {
-      (this.scene as LinkGame).sound.play("beep", { volume: 0.2 });
+      (this.scene as LinkGame).sound.play("beep", { volume: 0.3 });
     }
 
     point.x = point.data.get("originalX");

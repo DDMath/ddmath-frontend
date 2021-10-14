@@ -105,7 +105,7 @@ export default class ShootingGame extends Phaser.Scene {
       sceneEvents.emit("get-point", this.order);
 
       this.order++;
-      this.sound.play("pop", { volume: 0.3 });
+      this.sound.play("pop", { volume: 0.5 });
 
       if (this.order === TOTAL_ENEMY_NUMBER + 1) {
         this.state = GameState.GameOver;

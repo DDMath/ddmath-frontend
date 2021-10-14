@@ -71,9 +71,9 @@ export async function getUserData() {
   }
 }
 
-export async function updateFinalStageRecord(stage: string) {
+export async function updateFinalStageRecord(game: string) {
   try {
-    const data = { lastStage: stage };
+    const data = { game };
     const url = `${process.env.REACT_APP_SERVER_URL}/api/user`;
 
     const response = await fetch(url, {

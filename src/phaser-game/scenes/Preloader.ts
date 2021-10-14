@@ -18,7 +18,7 @@ export default class Preloader extends Phaser.Scene {
       (value: number) => {
         this.progressBar.clear();
         this.progressBar.fillStyle(0xfca311, 1);
-        this.progressBar.fillRect(210, 260, 360 * value, 30);
+        this.progressBar.fillRect(210, 280, 380 * value, 30);
       },
       this
     );
@@ -90,6 +90,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("correct", "/sound/correct.mp3");
     this.load.audio("background-music", "/sound/background-music.mp3");
 
+    this.load.image("coin-image", "/game/coin-image.png");
+    this.load.atlas("coin", "/game/coin.png", "/game/coin.json");
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-stand", "/character/stand.png", "/character/stand.json");
   }
@@ -117,6 +119,19 @@ export default class Preloader extends Phaser.Scene {
         start: 1,
         end: 4,
         prefix: "run-",
+        zeroPad: 2,
+        suffix: ".png",
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "coin",
+      frames: this.anims.generateFrameNames("coin", {
+        start: 1,
+        end: 5,
+        prefix: "coin-",
         zeroPad: 2,
         suffix: ".png",
       }),
@@ -156,7 +171,7 @@ export default class Preloader extends Phaser.Scene {
   private createLoadingbar(): void {
     this.loadingBar = this.add.graphics();
     this.loadingBar.fillStyle(0x023047, 1);
-    this.loadingBar.fillRect(200, 250, 380, 50);
+    this.loadingBar.fillRect(200, 270, 400, 50);
     this.progressBar = this.add.graphics();
   }
 }
