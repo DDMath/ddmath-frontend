@@ -37,7 +37,11 @@ export default class Stages extends Phaser.Scene {
   createButtons() {
     const { lastStage } = this.registry.get("user");
 
-    for (let i = 0; i <= lastStage; i++) {
+    for (let i = 0; i < lastStage + 1; i++) {
+      if (i === 3) {
+        return;
+      }
+
       const button = new Phaser.GameObjects.Sprite(this, 50 + 200 * i, 365, `stage${i + 1}`);
 
       button.setOrigin(0, 0).setInteractive();
