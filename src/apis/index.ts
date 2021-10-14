@@ -5,12 +5,12 @@ dotenv.config();
 export async function googleLogin() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
+    const data = await auth.signInWithPopup(provider);
 
-    const token = await auth?.currentUser?.getIdToken(true);
+    if (data) {
+      const { email, displayName } = data.user;
 
-    if (token) {
-      const response = await login({ id_token: token });
+      const response = await login({ email, displayName });
       const responseBody = await response.json();
 
       if (!response.ok) {

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import LogOutButton from "../common/LogOutButton";
 import SoundToggleButton from "../common/SoundToggleButton";
-import UserInformation from "../common/UserInformation";
+import UserInformation from "../common/UserStatus";
 
 export interface IUser {
   _id: string;
