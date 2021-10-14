@@ -5,8 +5,6 @@ export default class Stages extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private character!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
-  public lastStage?: number;
-
   constructor() {
     super("stages");
   }
@@ -16,22 +14,31 @@ export default class Stages extends Phaser.Scene {
 
     this.createButtons();
     this.createCharacter();
+    this.createLastStageReward();
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    sceneEvents.on("logout", this.handleLogout, this);
+    this.physics.world.setBounds(0, 50, 500, 600);
 
+    sceneEvents.on("logout", this.handleLogout, this);
     this.handleSceneEventsOff();
   }
 
   createCharacter() {
+    const { lastStage } = this.registry.get("user");
+    const location = Math.min(lastStage, 2);
+
     this.character = this.physics.add
-      .sprite(110, 410, "character-stand")
+      .sprite(100 + 200 * location, 410, "character-stand")
       .setSize(150, 180)
       .setOrigin(0.5, 1)
       .setOffset(30, 15)
+      .setGravityY(-30)
       .setScale(0.5)
+      .setDepth(1)
       .play("character-stand");
+
+    this.character.body.setOffset(20, 20);
   }
 
   createButtons() {
@@ -66,6 +73,23 @@ export default class Stages extends Phaser.Scene {
     }
   }
 
+  createLastStageReward() {
+    const { lastStage } = this.registry.get("user");
+
+    if (lastStage === 3) {
+      const coin = this.physics.add
+        .sprite(650, 360, "coin-image")
+        .setOrigin(0.5, 0.5)
+        .setSize(50, 50)
+        .setGravity(0, -30)
+        .setDepth(0)
+        .play("coin");
+
+      coin.body.offset.x = 0;
+      coin.body.offset.y = 0;
+    }
+  }
+
   handleLogout() {
     localStorage.removeItem("accessToken");
     this.registry.remove("user");
@@ -80,22 +104,30 @@ export default class Stages extends Phaser.Scene {
   }
 
   update() {
-    this.character.setDrag(1000);
-
     if (this.cursors.right.isDown) {
-      const velocity = 100;
+      if (this.character.x > 600) {
+        this.character.x = 600;
+        return;
+      }
+
+      const velocity = 130;
 
       this.character.play("character-run", true);
-      this.character.setVelocityX(velocity);
+      this.character.setVelocityX(velocity).setFlipX(false);
     } else if (this.cursors.left.isDown) {
-      const velocity = -100;
+      if (this.character.x < 50) {
+        this.character.x = 50;
+        return;
+      }
 
-      this.character.setScale(-0.5, 0.5);
-      this.character.setVelocityX(velocity);
+      const velocity = -130;
 
       this.character.play("character-run", true);
+      this.character.setVelocityX(velocity).setFlipX(true);
     } else {
-      this.character.setScale(0.5);
+      const velocity = 0;
+
+      this.character.setScale(0.5).setVelocityX(velocity);
       this.character.play("character-stand", true);
     }
   }
