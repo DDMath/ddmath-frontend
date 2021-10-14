@@ -10,7 +10,7 @@ export async function googleLogin() {
     if (data) {
       const { email, displayName } = data.user;
 
-      const response = await login({ email, displayName });
+      const response = await login({ email, name: displayName });
       const responseBody = await response.json();
 
       if (!response.ok) {
@@ -30,7 +30,7 @@ export async function googleLogin() {
   }
 }
 
-async function login(data: { id_token: string }) {
+async function login(data: { email: string; name: string }) {
   const url = `${process.env.REACT_APP_SERVER_URL}/api/auth/login`;
   const response = await fetch(url, {
     method: "POST",
