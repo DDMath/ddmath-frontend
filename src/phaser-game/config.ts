@@ -11,8 +11,13 @@ import StagesStatusBar from "./scenes/StagesStatusBar";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: "game-container",
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 800,
+    height: 600,
+  },
   physics: {
     default: "arcade",
     arcade: {
@@ -20,7 +25,6 @@ export const config: Phaser.Types.Core.GameConfig = {
     },
   },
   title: "DD Math",
-  parent: "game-container",
   backgroundColor: "#eae4e9",
   scene: [
     Preloader,
