@@ -2,8 +2,8 @@ import { DefaultTheme } from "styled-components";
 
 const theme: DefaultTheme = {
   size: {
-    width: "800px",
-    height: "600px",
+    maxWidth: "800px",
+    maxHeight: "600px",
   },
   colors: {
     background: "#fff",

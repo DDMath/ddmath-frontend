@@ -9,23 +9,25 @@ function StartButton({ onClick }) {
 
 const StyledButton = styled(Button)`
   position: absolute;
-  right: 255px;
-  bottom: 100px;
+  left: 50%;
+  bottom: 12%;
+  transform: translate(-50%, -15%);
 
-  padding: 15px 12px;
-  width: 280px;
+  padding: 0.5em 1em;
+  width: 40%;
 
+  font-size: 3.5vmin;
+  letter-spacing: 5px;
   color: ${({ theme }) => theme.colors.darkblue};
-  font-size: 40px;
+
+  background-color: ${({ theme }) => theme.colors.yellow};
   border: 3px solid ${({ theme }) => theme.colors.black};
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.colors.yellow};
-  letter-spacing: 5px;
   transition: 200ms;
 
   &:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.4);
+    transform: translate(-52%, -25%);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
   }
 `;
 

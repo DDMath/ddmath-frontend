@@ -31,6 +31,11 @@ function Welcome() {
 const Wrapper = styled.div`
   ${fullWidthAndHeight}
 
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
   background-size: cover;
   background-position: center;
   background-image: url("background/welcome.png");

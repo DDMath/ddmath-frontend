@@ -45,8 +45,14 @@ const DisplayContainer = styled.div`
 const Content = styled.div`
   ${flexCenter}
 
-  width: ${({ theme }) => theme.size.width};
-  height: ${({ theme }) => theme.size.height};
+  position: relative;
+  aspect-ratio: 4 / 3;
+
+  width: 100%;
+  height: auto;
+
+  max-width: ${({ theme }) => theme.size.maxWidth};
+  max-height: ${({ theme }) => theme.size.maxHeight};
 
   overflow: hidden;
   border-radius: 5px;
