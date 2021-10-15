@@ -27,6 +27,8 @@ export default class ShootingGame extends Phaser.Scene {
   }
 
   init() {
+    this.cameras.main.fadeIn(800);
+
     this.add.image(0, 0, "background2").setOrigin(0, 0);
 
     this.order = 1;

@@ -45,6 +45,27 @@ export default class StatusBar extends Phaser.Scene {
       } else {
         star.setTexture("star-empty");
       }
+
+      if (index + 1 === point) {
+        const originalX = star.x;
+        const originalY = star.y;
+        const originalWidth = star.displayWidth;
+        const originalHeight = star.displayHeight;
+
+        star.displayWidth = 200;
+        star.displayHeight = 200;
+        star.x = 400 + star.x;
+        star.y = 200 + star.y;
+
+        this.tweens.add({
+          targets: star,
+          duration: 600,
+          x: originalX,
+          y: originalY,
+          displayWidth: originalWidth,
+          displayHeight: originalHeight,
+        });
+      }
     });
   }
 

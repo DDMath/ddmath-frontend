@@ -10,6 +10,8 @@ export default class Stages extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.fadeIn(800);
+
     this.add.image(0, 0, "stages").setOrigin(0, 0);
 
     this.createButtons();
@@ -54,12 +56,11 @@ export default class Stages extends Phaser.Scene {
       this.add.existing(button);
 
       const games = ["puzzle-game", "link-game", "shooting-game"];
-      button.name = games[i];
 
       button.on("pointerover", () => button.setTint(0xf8edeb));
       button.on("pointerout", () => button.clearTint());
       button.on("pointerdown", () => {
-        this.scene.start(button.name);
+        this.scene.start(games[i]);
         this.scene.stop("stages-status-bar");
       });
     }

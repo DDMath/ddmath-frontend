@@ -24,6 +24,8 @@ export default class PuzzleGame extends Phaser.Scene {
   }
 
   init() {
+    this.cameras.main.fadeIn(800);
+
     this.state = GameState.Playing;
     this.add.image(0, 0, "background1").setOrigin(0, 0);
   }

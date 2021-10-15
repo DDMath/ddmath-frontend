@@ -29,6 +29,8 @@ export default class LinkGame extends Phaser.Scene {
   }
 
   init() {
+    this.cameras.main.fadeIn(800);
+
     this.state = GameState.Playing;
 
     this.drawing = false;
