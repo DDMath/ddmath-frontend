@@ -92,6 +92,10 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.image("coin-image", "/game/coin-image.png");
     this.load.atlas("coin", "/game/coin.png", "/game/coin.json");
+
+    this.load.image("cursor-image", "/game/cursor.png");
+    this.load.atlas("cursor", "/game/cursor-anim.png", "/game/cursor-anim.json");
+
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-stand", "/character/stand.png", "/character/stand.json");
   }
@@ -136,6 +140,19 @@ export default class Preloader extends Phaser.Scene {
         suffix: ".png",
       }),
       frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "cursor",
+      frames: this.anims.generateFrameNames("cursor", {
+        start: 1,
+        end: 2,
+        prefix: "cursor-",
+        zeroPad: 2,
+        suffix: ".png",
+      }),
+      frameRate: 2,
       repeat: -1,
     });
 

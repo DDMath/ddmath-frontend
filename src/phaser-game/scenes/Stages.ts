@@ -14,11 +14,10 @@ export default class Stages extends Phaser.Scene {
 
     this.createButtons();
     this.createCharacter();
-    this.createLastStageReward();
+    this.createGuideCursor();
+    this.createStageClearReward();
 
     this.cursors = this.input.keyboard.createCursorKeys();
-
-    this.physics.world.setBounds(0, 50, 500, 600);
 
     sceneEvents.on("logout", this.handleLogout, this);
     this.handleSceneEventsOff();
@@ -50,19 +49,19 @@ export default class Stages extends Phaser.Scene {
       }
 
       const button = new Phaser.GameObjects.Sprite(this, 50 + 200 * i, 365, `stage${i + 1}`);
-
       button.setOrigin(0, 0).setInteractive();
+
       this.add.existing(button);
 
       const games = ["puzzle-game", "link-game", "shooting-game"];
-
-      button.on("pointerdown", () => {
-        this.scene.start(games[i]);
-        this.scene.stop("stages-status-bar");
-      });
+      button.name = games[i];
 
       button.on("pointerover", () => button.setTint(0xf8edeb));
       button.on("pointerout", () => button.clearTint());
+      button.on("pointerdown", () => {
+        this.scene.start(button.name);
+        this.scene.stop("stages-status-bar");
+      });
     }
 
     for (let i = lastStage + 1; i < 3; i++) {
@@ -73,12 +72,22 @@ export default class Stages extends Phaser.Scene {
     }
   }
 
-  createLastStageReward() {
+  createGuideCursor() {
+    const { lastStage } = this.registry.get("user");
+
+    if (lastStage === 3) {
+      return;
+    }
+
+    this.add.sprite(160 + 200 * lastStage, 450, "cursor-image").play("cursor");
+  }
+
+  createStageClearReward() {
     const { lastStage } = this.registry.get("user");
 
     if (lastStage === 3) {
       const coin = this.physics.add
-        .sprite(650, 360, "coin-image")
+        .sprite(670, 360, "coin-image")
         .setOrigin(0.5, 0.5)
         .setSize(50, 50)
         .setGravity(0, -30)
