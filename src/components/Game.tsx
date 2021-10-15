@@ -34,6 +34,10 @@ function Game() {
 
 const Wrapper = styled.div`
   ${fullWidthAndHeight}
+
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 export default Game;
