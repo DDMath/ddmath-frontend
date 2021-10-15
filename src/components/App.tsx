@@ -43,19 +43,20 @@ const DisplayContainer = styled.div`
 `;
 
 const Content = styled.div`
-  ${flexCenter}
-
   position: relative;
-  aspect-ratio: 4 / 3;
 
   width: 100%;
-  height: auto;
+  aspect-ratio: 4 / 3;
 
   max-width: ${({ theme }) => theme.size.maxWidth};
   max-height: ${({ theme }) => theme.size.maxHeight};
 
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 10px 20px, rgba(0, 0, 0, 0.4) 0px 10px 10px;
+
+  @media screen and (max-width: 800px) {
+    padding-top: 75%;
+  }
 `;
 
 export default App;

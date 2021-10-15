@@ -13,7 +13,7 @@ const StyledButton = styled(Button)`
   bottom: 12%;
   transform: translate(-50%, -15%);
 
-  padding: 0.5em 1em;
+  padding: 0.4em 1em;
   width: 40%;
 
   font-size: 3.5vmin;
