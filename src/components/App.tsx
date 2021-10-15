@@ -54,9 +54,7 @@ const Content = styled.div`
   max-width: ${({ theme }) => theme.size.maxWidth};
   max-height: ${({ theme }) => theme.size.maxHeight};
 
-  overflow: hidden;
   border-radius: 5px;
-
   box-shadow: rgba(0, 0, 0, 0.4) 0px 10px 20px, rgba(0, 0, 0, 0.4) 0px 10px 10px;
 `;
 
