@@ -8,6 +8,7 @@ import Preloader from "./scenes/Preloader";
 import PuzzleGame from "./scenes/PuzzleGame";
 import ShootingGame from "./scenes/ShootingGame";
 import StagesStatusBar from "./scenes/StagesStatusBar";
+import Stage3GameGuide from "./scenes/Stage3GameGuide";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -34,6 +35,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     ShootingGame,
     StagesStatusBar,
     StatusBar,
+    Stage3GameGuide,
     GameOver,
   ],
 };

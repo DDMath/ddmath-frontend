@@ -46,6 +46,10 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     ball.body.y = ball.y;
   }
 
+  setShotPreview() {
+    return (this.shotPreview = new ShotPreview(this.scene));
+  }
+
   update() {
     const pointer = this.scene.input.activePointer;
 
@@ -67,9 +71,5 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
   get getShotPreview(): ShotPreview {
     return this.shotPreview;
-  }
-
-  setShotPreview() {
-    this.shotPreview = new ShotPreview(this.scene);
   }
 }

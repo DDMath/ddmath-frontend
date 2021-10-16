@@ -34,8 +34,6 @@ export default class ShootingGame extends Phaser.Scene {
     this.order = 1;
     this.state = GameState.Playing;
 
-    this.createEnemyGroup();
-
     this.input.on("pointerup", this.handlePointerUp, this);
   }
 
@@ -52,6 +50,7 @@ export default class ShootingGame extends Phaser.Scene {
     this.cannon = new Cannon(this, width / 2, height - 35, "cannon").setDepth(3);
     this.cannon.setShotPreview();
 
+    this.createEnemyGroup();
     this.createEnemies(this.enemyGroup);
 
     this.physics.world.setBounds(0, 50, width, height - 50);

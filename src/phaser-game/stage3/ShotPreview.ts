@@ -9,7 +9,7 @@ class PreviewCricle extends Phaser.GameObjects.Arc {
 export default class ShotPreview {
   private total = 7;
   private scene: Phaser.Scene;
-  private previews: PreviewCricle[] = [];
+  private _previews: PreviewCricle[] = [];
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -61,5 +61,9 @@ export default class ShotPreview {
 
   shotPreviewsLength() {
     return this.previews.length;
+  }
+
+  get previews() {
+    return this._previews;
   }
 }

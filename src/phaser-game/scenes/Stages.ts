@@ -16,7 +16,7 @@ export default class Stages extends Phaser.Scene {
 
     this.createButtons();
     this.createCharacter();
-    this.createGuideCursor();
+    this.createClickGuide();
     this.createStageClearReward();
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -73,7 +73,7 @@ export default class Stages extends Phaser.Scene {
     }
   }
 
-  createGuideCursor() {
+  createClickGuide() {
     const { lastStage } = this.registry.get("user");
 
     if (lastStage === 3) {

@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import GameGuideButton from "../common/GameGuideButton";
 import GoBackButton from "../common/GoBackButton";
 import { sceneEvents } from "../events/EventsManager";
 
@@ -86,6 +87,10 @@ export default class StatusBar extends Phaser.Scene {
         stepX: 35,
       },
     });
+
+    if (game === "shooting-game") {
+      new GameGuideButton(this, 750, 30, "help");
+    }
 
     new GoBackButton(this, 50, 30, "goBack", game);
   }

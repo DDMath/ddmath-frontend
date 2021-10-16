@@ -46,6 +46,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("star-empty", "/game/star-empty.png");
 
     this.load.image("lock", "/game/lock.png");
+    this.load.image("help", "/game/help.png");
     this.load.image("logout", "/game/logout.png");
     this.load.image("sound-on", "/game/sound-on.png");
     this.load.image("sound-off", "/game/sound-off.png");
