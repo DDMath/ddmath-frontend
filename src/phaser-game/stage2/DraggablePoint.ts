@@ -22,7 +22,7 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     const leftPoint = new Phaser.GameObjects.Sprite(scene, -70, 0, "point");
     const rightPoint = new Phaser.GameObjects.Sprite(scene, 70, 0, "point");
 
-    rightPoint.setSize(rightPoint.displayWidth, rightPoint.displayHeight);
+    rightPoint.setSize(rightPoint.displayWidth + 30, rightPoint.displayHeight + 30);
     rightPoint.setInteractive({ draggable: rightPoint });
 
     super(scene, x, y, [leftPoint, rightPoint, pointImage]);
@@ -63,25 +63,27 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
       "drag",
       (
         pointer: Phaser.Input.Pointer,
-        gameObject: Phaser.GameObjects.Sprite,
+        point: Phaser.GameObjects.Sprite,
         dragX: number,
         dragY: number
       ) => {
-        if (this !== gameObject.parentContainer) {
+        const startingPoint = point.parentContainer;
+
+        if (this !== startingPoint) {
           return;
         }
 
-        const distanceX = Math.abs(gameObject.x - dragX);
-        const distanceY = Math.abs(gameObject.y - dragY);
+        const distanceX = Math.abs(point.x - dragX);
+        const distanceY = Math.abs(point.y - dragY);
 
         if (!distanceX && !distanceY) {
           return;
         }
 
-        gameObject.x = dragX;
-        gameObject.y = dragY;
+        point.x = pointer.x - startingPoint.x;
+        point.y = pointer.y - startingPoint.y;
 
-        (scene as LinkGame).drawLine(gameObject);
+        (scene as LinkGame).drawLine(point);
       }
     );
 
