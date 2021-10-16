@@ -7,7 +7,7 @@ import { LinkGameCardTypes } from "../stage2/linkGameCardTypes";
 import { PuzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
 import CardBase from "./CardBase";
 
-type DataType = {
+interface DataType {
   rows: number;
   columns: number;
   xStart: number;
@@ -21,7 +21,7 @@ type DataType = {
     pointer: Phaser.Input.Pointer,
     gameObject?: DraggableCard | Phaser.GameObjects.Sprite
   ): void;
-};
+}
 
 export default class Grid {
   private rows: number;

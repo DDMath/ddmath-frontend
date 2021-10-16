@@ -10,7 +10,7 @@ export default class Stage3GameGuide extends Phaser.Scene {
   private shotPreview!: ShotPreview;
 
   constructor() {
-    super("guide");
+    super("shooting-game-guide");
   }
 
   init() {
@@ -90,6 +90,6 @@ export default class Stage3GameGuide extends Phaser.Scene {
   }
 
   private handlePointerUp() {
-    this.scene.stop("guide");
+    this.scene.stop("shooting-game-guide");
   }
 }

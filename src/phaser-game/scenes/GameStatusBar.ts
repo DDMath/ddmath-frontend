@@ -9,7 +9,7 @@ interface StatusBarData {
   totalScore: number;
 }
 
-export default class StatusBar extends Phaser.Scene {
+export default class GameStatusBar extends Phaser.Scene {
   private stars!: Phaser.GameObjects.Group;
   private targetScore!: number;
   private gameName!: string;
@@ -88,11 +88,8 @@ export default class StatusBar extends Phaser.Scene {
       },
     });
 
-    if (game === "shooting-game") {
-      new GameGuideButton(this, 750, 30, "help");
-    }
-
     new GoBackButton(this, 50, 30, "goBack", game);
+    new GameGuideButton(this, 750, 30, "help", game);
   }
 
   private getStatusBarColor(game: string) {
