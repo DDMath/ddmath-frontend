@@ -3,7 +3,11 @@ import { sceneEvents } from "../events/EventsManager";
 
 export default class Stages extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private coin?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private character!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+
+  private stone!: Phaser.GameObjects.Sprite;
+  private girlfriend!: Phaser.GameObjects.Sprite;
 
   constructor() {
     super("stages");
@@ -40,6 +44,10 @@ export default class Stages extends Phaser.Scene {
       .play("character-stand");
 
     this.character.body.setOffset(20, 20);
+
+    this.add.sprite(360, 290, "stone1").setOrigin(0.5, 1).setScale(1, 0.7);
+    this.stone = this.add.sprite(410, 320, `stone${lastStage + 1}`).setOrigin(0.5, 1);
+    this.add.sprite(460, 350, "stone1").setOrigin(0.5, 1).setScale(1, 0.7);
   }
 
   createButtons() {
@@ -87,16 +95,56 @@ export default class Stages extends Phaser.Scene {
     const { lastStage } = this.registry.get("user");
 
     if (lastStage === 3) {
-      const coin = this.physics.add
-        .sprite(670, 360, "coin-image")
+      this.coin = this.physics.add
+        .sprite(630, 360, "coin-image")
         .setOrigin(0.5, 0.5)
         .setSize(50, 50)
         .setGravity(0, -30)
         .setDepth(0)
         .play("coin");
 
-      coin.body.offset.x = 0;
-      coin.body.offset.y = 0;
+      this.coin.body.offset.x = 0;
+      this.coin.body.offset.y = 0;
+
+      this.physics.add.collider(this.character, this.coin, () => {
+        this.coin?.destroy();
+        this.sound.play("coin", { volume: 0.5 });
+
+        this.tweens.add({
+          targets: this.stone,
+          duration: 1000,
+          delay: 500,
+          alpha: 0,
+        });
+
+        this.girlfriend = this.add
+          .sprite(650, 360, "character-stand")
+          .setOrigin(0.5, 0.5)
+          .setFlipX(true)
+          .setScale(0.5)
+          .setDepth(1)
+          .setAlpha(0)
+          .play("character-stand");
+
+        this.tweens.add({
+          targets: this.girlfriend,
+          duration: 1000,
+          delay: 500,
+          alpha: 1,
+        });
+
+        const heart = this.add.sprite(615, 300, "heart").setAlpha(0).setDepth(0);
+        this.add.existing(heart);
+
+        this.tweens.add({
+          targets: heart,
+          duration: 1000,
+          delay: 1000,
+          scale: 1.6,
+          alpha: 0.7,
+          repeat: -1,
+        });
+      });
     }
   }
 
@@ -115,8 +163,8 @@ export default class Stages extends Phaser.Scene {
 
   update() {
     if (this.cursors.right.isDown) {
-      if (this.character.x > 600) {
-        this.character.x = 600;
+      if (this.character.x > 575) {
+        this.character.x = 575;
         return;
       }
 

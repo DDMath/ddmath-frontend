@@ -53,6 +53,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("user-info", "/game/user-info.png");
 
     this.load.image("board", "/game/board.png");
+    this.load.image("heart", "/game/heart.png");
     this.load.image("point", "/game/point.png");
     this.load.image("cannon", "/game/cannon.png");
     this.load.image("box-blue", "/game/box-blue.png");
@@ -87,6 +88,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("pop", "/sound/pop.wav");
     this.load.audio("jump", "/sound/jump.wav");
     this.load.audio("beep", "/sound/beep.wav");
+    this.load.audio("coin", "/sound/coin.wav");
     this.load.audio("click", "/sound/click.wav");
     this.load.audio("correct", "/sound/correct.mp3");
     this.load.audio("background-music", "/sound/background-music.mp3");
@@ -96,6 +98,11 @@ export default class Preloader extends Phaser.Scene {
 
     this.load.image("cursor-image", "/game/cursor.png");
     this.load.atlas("cursor", "/game/cursor-anim.png", "/game/cursor-anim.json");
+
+    this.load.image("stone1", "/character/stone1.png");
+    this.load.image("stone2", "/character/stone2.png");
+    this.load.image("stone3", "/character/stone3.png");
+    this.load.image("stone4", "/character/stone4.png");
 
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-stand", "/character/stand.png", "/character/stand.json");
