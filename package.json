@@ -1,13 +1,13 @@
 {
   "name": "dd-math",
   "version": "1.0.0",
-  "description": "math education app for children in the world",
+  "description": "math education app for all the children",
   "author": "Donghyuk Choi <gohyuk528@gmail.com>",
   "license": "ISC",
   "scripts": {
     "clean": "rm dist/bundle.js",
-    "start": "parcel src/index.html -p 3000",
-    "build": "parcel build src/index.html --out-dir dist"
+    "start": "parcel public/index.html -p 3000",
+    "build": "parcel build public/index.html --out-dir dist"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
@@ -42,7 +42,7 @@
     "typescript": "^4.4.3"
   },
   "staticFiles": {
-    "staticPath": "assets",
+    "staticPath": "public/assets",
     "watcherGlob": "**"
   },
   "parcelCleanPaths": [

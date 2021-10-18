@@ -98,13 +98,23 @@ export default class Stages extends Phaser.Scene {
       this.coin = this.physics.add
         .sprite(630, 360, "coin-image")
         .setOrigin(0.5, 0.5)
-        .setSize(50, 50)
         .setGravity(0, -30)
+        .setSize(50, 50)
+        .setScale(1.1)
         .setDepth(0)
         .play("coin");
 
       this.coin.body.offset.x = 0;
       this.coin.body.offset.y = 0;
+
+      this.coin.setInteractive().on("pointerdown", () => {
+        this.tweens.add({
+          targets: this.character,
+          duration: 1000,
+          delay: 1000,
+          x: 580,
+        });
+      });
 
       this.physics.add.collider(this.character, this.coin, () => {
         this.coin?.destroy();

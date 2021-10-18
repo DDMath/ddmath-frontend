@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { getUserData } from "~/apis";
+import { getUserData } from "../../apis";
 import { sceneEvents } from "../events/EventsManager";
 
 export default class Preloader extends Phaser.Scene {

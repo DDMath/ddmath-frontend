@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { fullWidthAndHeight } from "./styles/mixin";
 
 import Phaser from "phaser";
-import { config } from "~/phaser-game/config";
+import { config } from "../phaser-game/config";
 
 function Game() {
   const history = useHistory();
