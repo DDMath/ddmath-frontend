@@ -17,6 +17,6 @@
     "typeRoots": ["node_modules/@types", "node_module/phaser/types"],
     "types": ["phaser", "node"]
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "public/service-worker.js"],
   "exclude": ["./node_modules/**/*"]
 }
