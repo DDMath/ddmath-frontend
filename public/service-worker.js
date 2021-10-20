@@ -2,11 +2,11 @@ import { registerRoute } from "workbox-routing";
 import { precacheAndRoute } from "workbox-precaching";
 import { ExpirationPlugin } from "workbox-expiration";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
-import { StaleWhileRevalidate, CacheFirst } from "workbox-strategies";
+import { StaleWhileRevalidate, CacheFirst, NetworkFirst } from "workbox-strategies";
 
 registerRoute(
   ({ request }) => request.mode === "navigate",
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: "pages",
     plugins: [new CacheableResponsePlugin({ statuses: [200] })],
   })

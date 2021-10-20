@@ -159,7 +159,6 @@ export default class Stages extends Phaser.Scene {
   }
 
   handleLogout() {
-    localStorage.removeItem("accessToken");
     this.registry.remove("user");
 
     window.location.href = "/";

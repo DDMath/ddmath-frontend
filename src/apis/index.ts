@@ -2,6 +2,16 @@ import { auth, firebase } from "./firebase";
 import dotenv from "dotenv";
 dotenv.config();
 
+const offlineUser = {
+  accessToken: "Offline User",
+  user: {
+    _id: "Offline User",
+    email: "You're offline. Some part of this app may be unavailable",
+    name: "Offline User",
+    lastStage: 0,
+  },
+};
+
 export async function googleLogin() {
   try {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -13,10 +23,6 @@ export async function googleLogin() {
       const response = await login({ email, name: displayName });
       const responseBody = await response.json();
 
-      if (!response.ok) {
-        throw new Error("login fail");
-      }
-
       localStorage.setItem("accessToken", responseBody.data.accessToken);
 
       await firebase.auth().signOut();
@@ -26,7 +32,7 @@ export async function googleLogin() {
       throw new Error("login fail");
     }
   } catch (err) {
-    throw new Error("login fail");
+    return offlineUser;
   }
 }
 
@@ -67,7 +73,7 @@ export async function getUserData() {
 
     return responseBody.data.user;
   } catch (err) {
-    throw new Error("login fail");
+    return offlineUser.user;
   }
 }
 
@@ -87,6 +93,6 @@ export async function updateFinalStageRecord(game: string) {
 
     return response;
   } catch (err) {
-    throw new Error("update fail");
+    return true;
   }
 }
