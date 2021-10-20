@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 
@@ -10,6 +10,20 @@ import Game from "./Game";
 import Welcome from "./Welcome";
 
 function App() {
+  useEffect(() => {
+    async function registerServiceWorker() {
+      try {
+        if ("serviceWorker" in navigator) {
+          await navigator.serviceWorker.register("/service-worker.js");
+        }
+      } catch (error) {
+        console.log("service worker registration failed", error);
+      }
+    }
+
+    registerServiceWorker();
+  }, []);
+
   return (
     <DisplayContainer>
       <GlobalStyle />
