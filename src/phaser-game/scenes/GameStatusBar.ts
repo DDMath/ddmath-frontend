@@ -94,7 +94,7 @@ export default class GameStatusBar extends Phaser.Scene {
 
   private getStatusBarColor(game: string) {
     const color =
-      game === "link-game"
+      game === "matching-game"
         ? 0x6d6875
         : game === "puzzle-game"
         ? 0x9c6644

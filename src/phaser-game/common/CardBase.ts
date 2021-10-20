@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import LinkGame from "../scenes/LinkGame";
-import DraggableCard from "../stage1/DraggableCard";
+import MatchingGame from "../scenes/MatchingGame";
+import DraggableCard from "../stage2/DraggableCard";
 
 interface DataType {
   scene: Phaser.Scene;
@@ -30,7 +30,7 @@ export default class CardBase extends Phaser.GameObjects.Container {
     spriteImage.setDisplaySize(85, 85);
 
     const randomDegree = Math.floor(Math.random() * 4) * 90;
-    spriteImage.angle = scene instanceof LinkGame ? randomDegree : 0;
+    spriteImage.angle = scene instanceof MatchingGame ? randomDegree : 0;
 
     this.spriteCard = spriteCard;
 

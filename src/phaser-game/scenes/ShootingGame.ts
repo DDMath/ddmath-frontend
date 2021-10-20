@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-import Ball from "../stage3/Ball";
-import Enemy from "../stage3/Enemy";
-import Cannon from "../stage3/Cannon";
+import Ball from "../stage1/Ball";
+import Enemy from "../stage1/Enemy";
+import Cannon from "../stage1/Cannon";
 
 import { sceneEvents } from "../events/EventsManager";
 import { updateFinalStageRecord } from "../../apis";

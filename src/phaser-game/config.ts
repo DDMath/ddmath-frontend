@@ -2,10 +2,10 @@ import Phaser from "phaser";
 
 import Stages from "./scenes/Stages";
 import GameOver from "./scenes/GameOver";
-import LinkGame from "./scenes/LinkGame";
 import Preloader from "./scenes/Preloader";
 import PuzzleGame from "./scenes/PuzzleGame";
 import ShootingGame from "./scenes/ShootingGame";
+import MatchingGame from "./scenes/MatchingGame";
 import GameStatusBar from "./scenes/GameStatusBar";
 import StagesStatusBar from "./scenes/StagesStatusBar";
 import Stage1GameGuide from "./scenes/Stage1GameGuide";
@@ -34,7 +34,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     Stages,
     StagesStatusBar,
     PuzzleGame,
-    LinkGame,
+    MatchingGame,
     ShootingGame,
     GameStatusBar,
     Stage1GameGuide,

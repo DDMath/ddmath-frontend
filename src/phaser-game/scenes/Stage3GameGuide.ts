@@ -1,16 +1,14 @@
 import Phaser from "phaser";
 
-import Enemy from "../stage3/Enemy";
-import Cannon from "../stage3/Cannon";
-import ShotPreview from "../stage3/ShotPreview";
+import Grid from "../common/Grid";
 
 export default class Stage3GameGuide extends Phaser.Scene {
+  private grid!: Grid;
+  private line!: Phaser.GameObjects.Line;
   private cursor!: Phaser.GameObjects.Sprite;
-  private cannon!: Cannon;
-  private shotPreview!: ShotPreview;
 
   constructor() {
-    super("shooting-game-guide");
+    super("matching-game-guide");
   }
 
   init() {
@@ -20,76 +18,65 @@ export default class Stage3GameGuide extends Phaser.Scene {
   }
 
   create() {
-    this.createEnemies();
-
-    this.cannon = new Cannon(this, 400, 500, "cannon");
-    this.shotPreview = this.cannon.setShotPreview();
-
-    this.createArrow();
+    this.createExampleCards();
     this.createClickGuide();
-    this.createShotPreviewAnimation();
   }
 
-  private createEnemies() {
-    for (let i = 0; i < 5; i++) {
-      const enemy = new Enemy(this, 80 * i + 240, 200, i + 1);
-      enemy.setImmovable(true).setGravityY(-30);
-    }
+  private createExampleCards() {
+    this.grid = new Grid({
+      scene: this,
+      rows: 1,
+      columns: 2,
+      xStart: 230,
+      yStart: 300,
+      xOffset: 340,
+      yOffset: 120,
+      game: "matching-game",
+      cardTypes: [
+        {
+          name: "star",
+          image: "star-green",
+          value: "green",
+        },
+        {
+          name: "star",
+          image: "star-blue",
+          value: "blue",
+        },
+      ],
+      onDragEnd: () => {
+        return null;
+      },
+    });
+
+    this.grid.addCards(0);
+    this.grid.addDraggablePoint(0);
   }
 
   private createClickGuide() {
-    this.cursor = this.add.sprite(300, 320, "cursor-image").play("cursor");
+    this.cursor = this.add.sprite(325, 330, "cursor-image").play("cursor").setDepth(5);
+    this.line = this.add.line(400, 300, 0, 0, 200, 0, 0xef524f).setLineWidth(2).setAlpha(0);
 
     this.tweens.add({
       targets: this.cursor,
-      duration: 1800,
-      x: this.cursor.x + 230,
-      ease: "Linear",
+      duration: 1000,
+      x: this.cursor.x + 200,
       repeat: -1,
-      yoyo: true,
+      hold: 500,
+      delay: 300,
     });
-  }
-
-  private createShotPreviewAnimation() {
-    const dx = this.cursor.x - this.cannon.x;
-    const dy = this.cursor.y - this.cannon.y;
-
-    const vec = new Phaser.Math.Vector2(dx, dy);
-    vec.normalize();
-
-    this.shotPreview.showPreview(this.cannon.x, this.cannon.y, vec, 10);
-
-    for (let i = 0; i < this.shotPreview.previews.length; i++) {
-      const target = this.shotPreview.previews[i];
-
-      this.tweens.add({
-        targets: target,
-        duration: 1800,
-        ease: "Linear",
-        x: target.x + 50 * (i + 1),
-        repeat: -1,
-        yoyo: true,
-      });
-    }
-
-    this.cannon.angle -= 30;
 
     this.tweens.add({
-      targets: this.cannon,
-      duration: 1800,
-      ease: "Linear",
-      angle: vec.angle() + 25,
+      targets: this.line,
+      duration: 1000,
       repeat: -1,
-      yoyo: true,
+      hold: 500,
+      delay: 300,
+      alpha: 1,
     });
-  }
-
-  private createArrow() {
-    this.add.line(400, 140, 0, 0, 300, 0, 0xef524f).setLineWidth(5);
-    this.add.line(550, 140, 0, 0, 30, 0, 0xef524f).setLineWidth(16, 1);
   }
 
   private handlePointerUp() {
-    this.scene.stop("shooting-game-guide");
+    this.scene.stop("matching-game-guide");
   }
 }

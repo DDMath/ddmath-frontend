@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import Grid from "../common/Grid";
 
-import DraggablePoint from "../stage2/DraggablePoint";
-import { linkGameCardTypes } from "../stage2/linkGameCardTypes";
+import DraggablePoint from "../stage3/DraggablePoint";
+import { matchingGameCardTypes } from "../stage3/matchingGameCardTypes";
 import { sceneEvents } from "../events/EventsManager";
 import { updateFinalStageRecord } from "../../apis";
 
@@ -13,7 +13,7 @@ enum GameState {
 
 const TOTAL_TARGET_SCORE = 8;
 
-export default class LinkGame extends Phaser.Scene {
+export default class MatchingGame extends Phaser.Scene {
   private grid!: Grid;
   private drawing!: boolean;
 
@@ -25,7 +25,7 @@ export default class LinkGame extends Phaser.Scene {
   private _points: Phaser.GameObjects.Sprite[] = [];
 
   constructor() {
-    super("link-game");
+    super("matching-game");
   }
 
   init() {
@@ -43,7 +43,7 @@ export default class LinkGame extends Phaser.Scene {
   create() {
     this.scene.run("status-bar", {
       scene: this,
-      game: "link-game",
+      game: "matching-game",
       totalScore: TOTAL_TARGET_SCORE,
     });
 
@@ -55,8 +55,8 @@ export default class LinkGame extends Phaser.Scene {
       yStart: 500,
       xOffset: 260,
       yOffset: 120,
-      game: "link-game",
-      cardTypes: linkGameCardTypes,
+      game: "matching-game",
+      cardTypes: matchingGameCardTypes,
       onDragEnd: this.checkCorrection,
     });
 
@@ -64,7 +64,7 @@ export default class LinkGame extends Phaser.Scene {
     this.grid.addDraggablePoint(0);
   }
 
-  drawLine(this: LinkGame, point: Phaser.GameObjects.Sprite) {
+  drawLine(this: MatchingGame, point: Phaser.GameObjects.Sprite) {
     if (this.state === GameState.GameOver) {
       return;
     }
@@ -88,8 +88,8 @@ export default class LinkGame extends Phaser.Scene {
     const { name, value } = point.parentContainer as DraggablePoint;
     let shouldTurnOnBeep = true;
 
-    for (let i = 0; i < (this.scene as LinkGame).points.length; i++) {
-      const targetCard = (this.scene as LinkGame).points[i].parentContainer;
+    for (let i = 0; i < (this.scene as MatchingGame).points.length; i++) {
+      const targetCard = (this.scene as MatchingGame).points[i].parentContainer;
       const {
         x: pointX,
         y: pointY,
@@ -115,28 +115,28 @@ export default class LinkGame extends Phaser.Scene {
 
         point.disableInteractive();
 
-        (this.scene as LinkGame).completedLines.push(completedLine);
-        sceneEvents.emit("get-point", (this.scene as LinkGame).completedLines.length);
+        (this.scene as MatchingGame).completedLines.push(completedLine);
+        sceneEvents.emit("get-point", (this.scene as MatchingGame).completedLines.length);
 
         shouldTurnOnBeep = false;
-        (this.scene as LinkGame).sound.play("correct", { volume: 0.3 });
+        (this.scene as MatchingGame).sound.play("correct", { volume: 0.3 });
       }
     }
 
     if (shouldTurnOnBeep) {
-      (this.scene as LinkGame).sound.play("beep", { volume: 0.3 });
+      (this.scene as MatchingGame).sound.play("beep", { volume: 0.3 });
     }
 
     point.x = point.data.get("originalX");
     point.y = point.data.get("originalY");
 
-    (this.scene as LinkGame).drawing = false;
+    (this.scene as MatchingGame).drawing = false;
 
-    if ((this.scene as LinkGame).completedLines.length === TOTAL_TARGET_SCORE) {
-      (this.scene as LinkGame).state = GameState.GameOver;
+    if ((this.scene as MatchingGame).completedLines.length === TOTAL_TARGET_SCORE) {
+      (this.scene as MatchingGame).state = GameState.GameOver;
 
       sceneEvents.emit("gameover");
-      updateFinalStageRecord("link-game");
+      updateFinalStageRecord("matching-game");
     }
   }
 

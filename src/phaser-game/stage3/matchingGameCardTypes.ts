@@ -1,10 +1,10 @@
-export type LinkGameCardTypes = {
+export type MatchingGameCardTypes = {
   name: string;
   image: string;
   value: string;
 };
 
-export const linkGameCardTypes: LinkGameCardTypes[] = [
+export const matchingGameCardTypes: MatchingGameCardTypes[] = [
   {
     name: "music",
     image: "music-green",

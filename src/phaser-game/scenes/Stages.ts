@@ -63,7 +63,7 @@ export default class Stages extends Phaser.Scene {
 
       this.add.existing(button);
 
-      const games = ["puzzle-game", "link-game", "shooting-game"];
+      const games = ["shooting-game", "puzzle-game", "matching-game"];
 
       button.on("pointerover", () => button.setTint(0xf8edeb));
       button.on("pointerout", () => button.clearTint());

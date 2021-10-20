@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { getUserData } from "../../apis";
 
 interface IGame {
   game: string;
@@ -32,14 +31,11 @@ export default class GameOver extends Phaser.Scene {
       this.scene.stop("status-bar");
       this.scene.stop(game);
 
-      const user = await getUserData();
+      const user = this.registry.get("user");
+      user.lastStage++;
 
-      if (user) {
-        this.registry.set("user", user);
-
-        this.scene.start("stages");
-        this.scene.run("stages-status-bar", { user });
-      }
+      this.scene.start("stages");
+      this.scene.run("stages-status-bar", { user });
     });
   }
 }

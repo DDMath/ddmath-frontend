@@ -1,10 +1,11 @@
 import Phaser from "phaser";
-import DraggableCard from "../stage1/DraggableCard";
-import DraggablePoint from "../stage2/DraggablePoint";
-import shuffleArray from "../../utils/shuffleArray";
 
-import { LinkGameCardTypes } from "../stage2/linkGameCardTypes";
-import { PuzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
+import shuffleArray from "../../utils/shuffleArray";
+import DraggableCard from "../stage2/DraggableCard";
+import DraggablePoint from "../stage3/DraggablePoint";
+
+import { PuzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
+import { MatchingGameCardTypes } from "../stage3/matchingGameCardTypes";
 import CardBase from "./CardBase";
 
 interface DataType {
@@ -15,8 +16,8 @@ interface DataType {
   xOffset: number;
   yOffset: number;
   scene: Phaser.Scene;
-  game: "puzzle-game" | "link-game";
-  cardTypes: PuzzleGameCardTypes[] | LinkGameCardTypes[];
+  game: "puzzle-game" | "matching-game";
+  cardTypes: PuzzleGameCardTypes[] | MatchingGameCardTypes[];
   onDragEnd(
     pointer: Phaser.Input.Pointer,
     gameObject?: DraggableCard | Phaser.GameObjects.Sprite
@@ -35,7 +36,7 @@ export default class Grid {
 
   public scene: Phaser.Scene;
   private _cards: DraggableCard[] = [];
-  private cardTypes: PuzzleGameCardTypes[] | LinkGameCardTypes[];
+  private cardTypes: PuzzleGameCardTypes[] | MatchingGameCardTypes[];
 
   onDragEnd: (
     pointer: Phaser.Input.Pointer,

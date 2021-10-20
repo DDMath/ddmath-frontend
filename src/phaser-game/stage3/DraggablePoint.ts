@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import LinkGame from "../scenes/LinkGame";
+import MatchingGame from "../scenes/MatchingGame";
 
 type PointData = {
   x: number;
@@ -22,7 +22,7 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     const leftPoint = new Phaser.GameObjects.Sprite(scene, -70, 0, "point");
     const rightPoint = new Phaser.GameObjects.Sprite(scene, 70, 0, "point");
 
-    rightPoint.setSize(rightPoint.displayWidth + 30, rightPoint.displayHeight + 30);
+    rightPoint.setSize(rightPoint.displayWidth + 50, rightPoint.displayHeight + 50);
     rightPoint.setInteractive({ draggable: rightPoint });
 
     super(scene, x, y, [leftPoint, rightPoint, pointImage]);
@@ -30,7 +30,7 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     this.name = name;
     this.value = value;
 
-    (scene as LinkGame).addNewPoint = leftPoint;
+    (scene as MatchingGame).addNewPoint = leftPoint;
 
     rightPoint.setDataEnabled();
 
@@ -42,8 +42,8 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
     }
 
     if (value === "blue") {
-      rightPoint.alpha = 0;
-      pointImage.alpha = 0;
+      rightPoint.destroy();
+      pointImage.destroy();
     }
 
     scene.add.existing(this);
@@ -83,7 +83,7 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
         point.x = pointer.x - startingPoint.x;
         point.y = pointer.y - startingPoint.y;
 
-        (scene as LinkGame).drawLine(point);
+        (scene as MatchingGame).drawLine(point);
       }
     );
 

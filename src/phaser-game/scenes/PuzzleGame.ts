@@ -1,13 +1,13 @@
 import Phaser from "phaser";
 
 import Grid from "../common/Grid";
-import GameBoard from "../stage1/GameBoard";
-import hitArea from "../stage1/puzzleHitArea";
-import DraggableCard from "../stage1/DraggableCard";
+import GameBoard from "../stage2/GameBoard";
+import hitArea from "../stage2/puzzleHitArea";
+import DraggableCard from "../stage2/DraggableCard";
 
 import { updateFinalStageRecord } from "../../apis";
 import { sceneEvents } from "../events/EventsManager";
-import { puzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
+import { puzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
 
 const TOTAL_TARGET_SCORE = 9;
 

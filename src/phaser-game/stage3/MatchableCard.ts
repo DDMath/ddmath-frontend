@@ -8,10 +8,10 @@ type CardData = {
   image: string;
   value: string | number;
   scene: Phaser.Scene;
-  ondragend(pointer: Phaser.Input.Pointer, gameObject: LinkableCard): void;
+  ondragend(pointer: Phaser.Input.Pointer, gameObject: MatchableCard): void;
 };
 
-export default class LinkableCard extends CardBase {
+export default class MatchableCard extends CardBase {
   constructor(data: CardData) {
     const { scene, ondragend } = data;
 
@@ -38,7 +38,7 @@ export default class LinkableCard extends CardBase {
       }
     );
 
-    scene.input.on("dragend", (pointer: Phaser.Input.Pointer, gameObject: LinkableCard) => {
+    scene.input.on("dragend", (pointer: Phaser.Input.Pointer, gameObject: MatchableCard) => {
       if (this !== gameObject) {
         return;
       }

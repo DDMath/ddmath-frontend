@@ -1,14 +1,16 @@
 import Phaser from "phaser";
 
-import Grid from "../common/Grid";
-import { puzzleGameCardTypes } from "../stage1/puzzleGameCardTypes";
+import Enemy from "../stage1/Enemy";
+import Cannon from "../stage1/Cannon";
+import ShotPreview from "../stage1/ShotPreview";
 
-export default class Stage2GameGuide extends Phaser.Scene {
-  private grid!: Grid;
+export default class Stage1GameGuide extends Phaser.Scene {
   private cursor!: Phaser.GameObjects.Sprite;
+  private cannon!: Cannon;
+  private shotPreview!: ShotPreview;
 
   constructor() {
-    super("puzzle-game-guide");
+    super("shooting-game-guide");
   }
 
   init() {
@@ -18,64 +20,76 @@ export default class Stage2GameGuide extends Phaser.Scene {
   }
 
   create() {
-    this.createExampleCards();
+    this.createEnemies();
+
+    this.cannon = new Cannon(this, 400, 500, "cannon");
+    this.shotPreview = this.cannon.setShotPreview();
+
+    this.createArrow();
     this.createClickGuide();
+    this.createShotPreviewAnimation();
   }
 
-  private createExampleCards() {
-    this.grid = new Grid({
-      scene: this,
-      rows: 1,
-      columns: 1,
-      xStart: 670,
-      yStart: 300,
-      xOffset: 0,
-      yOffset: 0,
-      game: "puzzle-game",
-      cardTypes: [
-        {
-          name: "orange2",
-          image: "orange-2",
-          value: 2,
-        },
-      ],
-      onDragEnd: () => {
-        return null;
-      },
-    });
-
-    this.grid.addDraggableCards(0);
+  private createEnemies() {
+    for (let i = 0; i < 5; i++) {
+      const enemy = new Enemy(this, 80 * i + 240, 200, i + 1);
+      enemy.setImmovable(true).setGravityY(-30);
+    }
   }
 
   private createClickGuide() {
-    this.cursor = this.add.sprite(700, 350, "cursor-image").play("cursor").setDepth(5);
-
-    const card = this.grid.cards[0];
+    this.cursor = this.add.sprite(300, 320, "cursor-image").play("cursor");
 
     this.tweens.add({
       targets: this.cursor,
-      duration: 1000,
-      x: 377,
-      y: 417,
+      duration: 1800,
+      x: this.cursor.x + 230,
+      ease: "Linear",
       repeat: -1,
-      hold: 500,
-      delay: 500,
-      repeatDelay: 500,
-    });
-
-    this.tweens.add({
-      targets: card,
-      duration: 1000,
-      x: 347,
-      y: 367,
-      repeat: -1,
-      hold: 500,
-      delay: 500,
-      repeatDelay: 500,
+      yoyo: true,
     });
   }
 
+  private createShotPreviewAnimation() {
+    const dx = this.cursor.x - this.cannon.x;
+    const dy = this.cursor.y - this.cannon.y;
+
+    const vec = new Phaser.Math.Vector2(dx, dy);
+    vec.normalize();
+
+    this.shotPreview.showPreview(this.cannon.x, this.cannon.y, vec, 10);
+
+    for (let i = 0; i < this.shotPreview.previews.length; i++) {
+      const target = this.shotPreview.previews[i];
+
+      this.tweens.add({
+        targets: target,
+        duration: 1800,
+        ease: "Linear",
+        x: target.x + 50 * (i + 1),
+        repeat: -1,
+        yoyo: true,
+      });
+    }
+
+    this.cannon.angle -= 30;
+
+    this.tweens.add({
+      targets: this.cannon,
+      duration: 1800,
+      ease: "Linear",
+      angle: vec.angle() + 25,
+      repeat: -1,
+      yoyo: true,
+    });
+  }
+
+  private createArrow() {
+    this.add.line(400, 140, 0, 0, 300, 0, 0xef524f).setLineWidth(5);
+    this.add.line(550, 140, 0, 0, 30, 0, 0xef524f).setLineWidth(16, 1);
+  }
+
   private handlePointerUp() {
-    this.scene.stop("puzzle-game-guide");
+    this.scene.stop("shooting-game-guide");
   }
 }
