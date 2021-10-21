@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import GameGuideButton from "../common/GameGuideButton";
-import GoBackButton from "../common/GoBackButton";
+import GameGuideButton from "./GameGuideButton";
+import GoBackButton from "./GoBackButton";
 import { sceneEvents } from "../events/EventsManager";
 
 interface StatusBarData {

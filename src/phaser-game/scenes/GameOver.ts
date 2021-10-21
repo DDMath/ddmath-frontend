@@ -31,8 +31,24 @@ export default class GameOver extends Phaser.Scene {
       this.scene.stop("status-bar");
       this.scene.stop(game);
 
+      let stage = 0;
+
+      switch (game) {
+        case "shooting-game":
+          stage = 1;
+          break;
+        case "puzzle-game":
+          stage = 2;
+          break;
+        case "matching-game":
+          stage = 3;
+          break;
+        default:
+          stage = 0;
+      }
+
       const user = this.registry.get("user");
-      user.lastStage++;
+      user.lastStage = stage;
 
       this.scene.start("stages");
       this.scene.run("stages-status-bar", { user });

@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-import Enemy from "../stage1/Enemy";
-import Cannon from "../stage1/Cannon";
-import ShotPreview from "../stage1/ShotPreview";
+import Enemy from "./Enemy";
+import Cannon from "./Cannon";
+import ShotPreview from "./ShotPreview";
 
 export default class Stage1GameGuide extends Phaser.Scene {
   private cursor!: Phaser.GameObjects.Sprite;

@@ -1,7 +1,5 @@
 import Phaser from "phaser";
-
 import Grid from "../common/Grid";
-import { puzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
 
 export default class Stage2GameGuide extends Phaser.Scene {
   private grid!: Grid;
