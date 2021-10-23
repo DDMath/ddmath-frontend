@@ -45,7 +45,6 @@ precacheAndRoute([
   { url: "background/stage2.png", revision: null },
   { url: "background/stage3.png", revision: null },
   { url: "background/stages.png", revision: null },
-  { url: "background/welcome.png", revision: null },
   { url: "card/card.png", revision: null },
   { url: "card/check-blue.png", revision: null },
   { url: "card/check-green.png", revision: null },
