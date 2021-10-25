@@ -3,14 +3,15 @@ dotenv.config();
 
 import { auth, firebase } from "./firebase";
 import { IUserData } from "./../types/user";
+import { USER, GAME } from "../constants";
 
 const offlineUser: IUserData = {
   data: {
-    accessToken: "offline user",
+    accessToken: USER.OFFLINE,
     user: {
-      email: "You're offline. Some part of this app may be unavailable",
-      displayName: "offline user",
-      lastStage: 3,
+      email: USER.OFFLINE_MESSAGE,
+      displayName: USER.OFFLINE,
+      lastStage: GAME.TOTAL_STAGE,
     },
   },
 };

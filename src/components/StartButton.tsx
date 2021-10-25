@@ -3,11 +3,15 @@ import styled from "styled-components";
 
 import Button from "./Button";
 
-function StartButton({ onClick }) {
-  return <StyledButton text="시작하기" onClick={onClick} />;
+type ButtonProps = {
+  onClick: () => void;
+};
+
+function StartButton({ onClick }: ButtonProps) {
+  return <StyledButton onClick={onClick} />;
 }
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<{ onClick: () => void }>`
   position: absolute;
   left: 50%;
   bottom: 12%;
