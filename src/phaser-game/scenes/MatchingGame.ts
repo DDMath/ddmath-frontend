@@ -4,7 +4,7 @@ import Grid from "../common/Grid";
 import DraggablePoint from "../stage3/DraggablePoint";
 import { matchingGameCardTypes } from "../stage3/matchingGameCardTypes";
 import { sceneEvents } from "../events/EventsManager";
-import { updateFinalStageRecord } from "../../apis";
+import { updateFinalStageRecord } from "../../api";
 
 enum GameState {
   Playing,

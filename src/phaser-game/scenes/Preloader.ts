@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { getUserData } from "../../apis";
+import { getUserData } from "../../api";
 import { sceneEvents } from "../events/EventsManager";
 
 export default class Preloader extends Phaser.Scene {
@@ -169,7 +169,7 @@ export default class Preloader extends Phaser.Scene {
       volume: 0.3,
     });
 
-    music.play();
+    // music.play();
 
     sceneEvents.on("toggleBackgroundMusic", () => {
       if (music.isPlaying) {

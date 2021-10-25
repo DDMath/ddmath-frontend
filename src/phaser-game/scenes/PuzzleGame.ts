@@ -5,7 +5,7 @@ import GameBoard from "../stage2/GameBoard";
 import hitArea from "../stage2/puzzleHitArea";
 import DraggableCard from "../stage2/DraggableCard";
 
-import { updateFinalStageRecord } from "../../apis";
+import { updateFinalStageRecord } from "../../api";
 import { sceneEvents } from "../events/EventsManager";
 import { puzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
 

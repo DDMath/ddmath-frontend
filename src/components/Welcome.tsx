@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router";
 
 import StartButton from "./StartButton";
-import { googleLogin } from "../apis";
+import { googleLogin } from "../api";
 import { fullWidthAndHeight } from "./styles/mixin";
 
 function Welcome() {

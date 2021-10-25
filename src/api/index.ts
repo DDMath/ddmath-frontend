@@ -1,14 +1,17 @@
-import { auth, firebase } from "./firebase";
 import dotenv from "dotenv";
 dotenv.config();
 
-const offlineUser = {
-  accessToken: "Offline User",
-  user: {
-    _id: "Offline User",
-    email: "You're offline. Some part of this app may be unavailable",
-    name: "Offline User",
-    lastStage: 0,
+import { auth, firebase } from "./firebase";
+import { IUserData } from "./../types/user";
+
+const offlineUser: IUserData = {
+  data: {
+    accessToken: "offline user",
+    user: {
+      email: "You're offline. Some part of this app may be unavailable",
+      displayName: "offline user",
+      lastStage: 3,
+    },
   },
 };
 
@@ -17,26 +20,20 @@ export async function googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     const data = await auth.signInWithPopup(provider);
 
-    if (data) {
-      const { email, displayName } = data.user;
+    const { email, displayName } = data?.user;
 
-      const response = await login({ email, name: displayName });
-      const responseBody = await response.json();
+    const response = await login<IUserData>({ email, name: displayName });
+    localStorage.setItem("accessToken", response.data.accessToken);
 
-      localStorage.setItem("accessToken", responseBody.data.accessToken);
+    await firebase.auth().signOut();
 
-      await firebase.auth().signOut();
-
-      return responseBody.data;
-    } else {
-      throw new Error("login fail");
-    }
+    return response.data;
   } catch (err) {
-    return offlineUser;
+    return offlineUser.data;
   }
 }
 
-async function login(data: { email: string; name: string }) {
+async function login<T>(data: { email: string; name: string }): Promise<T> {
   const url = `${process.env.REACT_APP_SERVER_URL}/api/auth/login`;
   const response = await fetch(url, {
     method: "POST",
@@ -46,7 +43,7 @@ async function login(data: { email: string; name: string }) {
     body: JSON.stringify(data),
   });
 
-  return response;
+  return await response.json();
 }
 
 async function getData() {
@@ -73,7 +70,7 @@ export async function getUserData() {
 
     return responseBody.data.user;
   } catch (err) {
-    return offlineUser.user;
+    return offlineUser.data.user;
   }
 }
 

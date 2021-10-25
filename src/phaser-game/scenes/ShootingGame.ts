@@ -5,7 +5,7 @@ import Enemy from "../stage1/Enemy";
 import Cannon from "../stage1/Cannon";
 
 import { sceneEvents } from "../events/EventsManager";
-import { updateFinalStageRecord } from "../../apis";
+import { updateFinalStageRecord } from "../../api";
 
 enum GameState {
   Playing,
