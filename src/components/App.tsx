@@ -31,7 +31,7 @@ function App() {
         <Content>
           <Switch>
             <Route exact path="/" component={Welcome} />
-            <Route path="/stages" component={Game} />
+            <Route path="/game" component={Game} />
             <Redirect to="/" />
           </Switch>
         </Content>
