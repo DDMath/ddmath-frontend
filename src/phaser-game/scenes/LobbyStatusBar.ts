@@ -1,18 +1,16 @@
 import Phaser from "phaser";
+
+import { COLOR, SCENE } from "../../constants";
+import { IUserStatus } from "../../types/user";
+
 import LogOutButton from "../common/LogOutButton";
 import SoundToggleButton from "../common/SoundToggleButton";
 
-export interface IUser {
-  _id: string;
-  email: string;
-  lastStage: string;
-}
-
 export default class StagesStatusBar extends Phaser.Scene {
-  private user!: IUser;
+  private user!: IUserStatus;
 
   constructor() {
-    super("stages-status-bar");
+    super(SCENE.LOBBY_STATUS_BAR);
   }
 
   init() {
@@ -24,14 +22,14 @@ export default class StagesStatusBar extends Phaser.Scene {
   }
 
   private createStatusBarElements() {
-    this.add.rectangle(0, 0, 800, 60, 0x90be6d, 0.8).setOrigin(0, 0);
+    this.add.rectangle(0, 0, 800, 60, COLOR.GREEN).setOrigin(0, 0);
 
     this.add
-      .text(25, 10, this.user.email, {
-        fontSize: "20px",
-        color: "#fff",
+      .text(25, 12, this.user.email, {
+        fontSize: "18px",
+        color: COLOR.WHITE_HEX,
         fontFamily: "Arial",
-        backgroundColor: "#ef524f",
+        backgroundColor: COLOR.RED_HEX,
         padding: { left: 15, right: 15, top: 10, bottom: 10 },
       })
       .setOrigin(0, 0);

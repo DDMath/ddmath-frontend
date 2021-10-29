@@ -8,7 +8,7 @@ type ButtonProps = {
 };
 
 function StartButton({ onClick }: ButtonProps) {
-  return <StyledButton onClick={onClick} />;
+  return <StyledButton text="시작하기" onClick={onClick} />;
 }
 
 const StyledButton = styled(Button)<{ onClick: () => void }>`

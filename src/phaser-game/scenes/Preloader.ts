@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { getUserData } from "../../api";
 import { sceneEvents } from "../events/EventsManager";
 
+import createCharacterAnimation from "../animations/Character";
+import { SCENE } from "../../constants";
 export default class Preloader extends Phaser.Scene {
   private loadingBar!: Phaser.GameObjects.Graphics;
   private progressBar!: Phaser.GameObjects.Graphics;
@@ -11,7 +13,50 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
-    this.createLoadingbar();
+    this.loadGameImages();
+    this.loadCardImages();
+    this.loadSoundEffects();
+    this.loadBackgroundImages();
+  }
+
+  create() {
+    createCharacterAnimation(this.anims);
+
+    this.createProgressgbar();
+    this.createBackgroundMusic();
+
+    this.loadUserData();
+  }
+
+  private async loadUserData() {
+    const user = await getUserData();
+
+    if (user) {
+      this.registry.set("user", user);
+
+      this.scene.start(SCENE.LOBBY);
+      this.scene.run(SCENE.LOBBY_STATUS_BAR, { user });
+    }
+  }
+
+  private createBackgroundMusic() {
+    const music = this.sound.add("background-music", {
+      loop: true,
+      volume: 0.3,
+    });
+
+    music.play();
+
+    sceneEvents.on("toggleBackgroundMusic", () => {
+      music.isPlaying ? music.pause() : music.resume();
+    });
+  }
+
+  private createProgressgbar() {
+    this.loadingBar = this.add.graphics();
+    this.loadingBar.fillStyle(0x023047, 1);
+    this.loadingBar.fillRect(200, 270, 400, 50);
+    this.progressBar = this.add.graphics();
 
     this.load.on(
       "progress",
@@ -31,17 +76,19 @@ export default class Preloader extends Phaser.Scene {
       },
       this
     );
+  }
 
+  private loadBackgroundImages() {
     this.load.image("background1", "/background/desk1.png");
     this.load.image("background2", "/background/desk2.png");
     this.load.image("background3", "/background/desk3.png");
 
-    this.load.image("stages", "/background/stages.png");
-    this.load.image("stage1", "/background/stage1.png");
-    this.load.image("stage2", "/background/stage2.png");
-    this.load.image("stage3", "/background/stage3.png");
-    this.load.image("goBack", "/game/goBackButton.png");
+    this.load.image("lobby", "/background/lobby.png");
+    this.load.image("stage", "/background/stage.png");
+  }
 
+  private loadGameImages() {
+    this.load.image("goBack", "/game/goBackButton.png");
     this.load.image("star", "/game/star.png");
     this.load.image("star-empty", "/game/star-empty.png");
 
@@ -56,10 +103,27 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("heart", "/game/heart.png");
     this.load.image("point", "/game/point.png");
     this.load.image("cannon", "/game/cannon.png");
-    this.load.image("box-blue", "/game/box-blue.png");
-    this.load.image("box-green", "/game/box-green.png");
-    this.load.image("box-yellow", "/game/box-yellow.png");
+    this.load.image("enemy-blue", "/game/enemy-blue.png");
+    this.load.image("enemy-green", "/game/enemy-green.png");
+    this.load.image("enemy-yellow", "/game/enemy-yellow.png");
 
+    this.load.image("coin-image", "/game/coin-image.png");
+    this.load.atlas("coin", "/game/coin.png", "/game/coin.json");
+
+    this.load.image("cursor-image", "/game/cursor.png");
+    this.load.atlas("cursor", "/game/cursor-anim.png", "/game/cursor-anim.json");
+
+    this.load.image("stone1", "/character/stone1.png");
+    this.load.image("stone2", "/character/stone2.png");
+    this.load.image("stone3", "/character/stone3.png");
+    this.load.image("stone4", "/character/stone4.png");
+    this.load.image("stone8", "/character/stone8.png");
+
+    this.load.atlas("character-run", "/character/run.png", "/character/run.json");
+    this.load.atlas("character-idle", "/character/stand.png", "/character/stand.json");
+  }
+
+  private loadCardImages() {
     this.load.image("card", "/card/card.png");
 
     this.load.image("kiwi-1", "/card/kiwi1.png");
@@ -84,119 +148,16 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("star-blue", "/card/star-blue.png");
     this.load.image("star-green", "/card/star-green.png");
     this.load.image("star-yellow", "/card/star-yellow.png");
+  }
 
+  private loadSoundEffects() {
     this.load.audio("pop", "/sound/pop.wav");
-    this.load.audio("jump", "/sound/jump.wav");
+    this.load.audio("drag", "/sound/jump.wav");
     this.load.audio("beep", "/sound/beep.wav");
     this.load.audio("coin", "/sound/coin.wav");
     this.load.audio("click", "/sound/click.wav");
     this.load.audio("correct", "/sound/correct.mp3");
+
     this.load.audio("background-music", "/sound/background-music.mp3");
-
-    this.load.image("coin-image", "/game/coin-image.png");
-    this.load.atlas("coin", "/game/coin.png", "/game/coin.json");
-
-    this.load.image("cursor-image", "/game/cursor.png");
-    this.load.atlas("cursor", "/game/cursor-anim.png", "/game/cursor-anim.json");
-
-    this.load.image("stone1", "/character/stone1.png");
-    this.load.image("stone2", "/character/stone2.png");
-    this.load.image("stone3", "/character/stone3.png");
-    this.load.image("stone4", "/character/stone4.png");
-
-    this.load.atlas("character-run", "/character/run.png", "/character/run.json");
-    this.load.atlas("character-stand", "/character/stand.png", "/character/stand.json");
-  }
-
-  create() {
-    const scene = this;
-    const sceneManager = this.scene;
-
-    this.anims.create({
-      key: "character-stand",
-      frames: this.anims.generateFrameNames("character-stand", {
-        start: 1,
-        end: 5,
-        prefix: "blink-",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "character-run",
-      frames: this.anims.generateFrameNames("character-run", {
-        start: 1,
-        end: 4,
-        prefix: "run-",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "coin",
-      frames: this.anims.generateFrameNames("coin", {
-        start: 1,
-        end: 5,
-        prefix: "coin-",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "cursor",
-      frames: this.anims.generateFrameNames("cursor", {
-        start: 1,
-        end: 2,
-        prefix: "cursor-",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 2,
-      repeat: -1,
-    });
-
-    const music = this.sound.add("background-music", {
-      loop: true,
-      volume: 0.3,
-    });
-
-    // music.play();
-
-    sceneEvents.on("toggleBackgroundMusic", () => {
-      if (music.isPlaying) {
-        music.pause();
-      } else {
-        music.resume();
-      }
-    });
-
-    async function authCheck() {
-      const user = await getUserData();
-
-      if (user) {
-        scene.registry.set("user", user);
-
-        sceneManager.start("stages");
-        sceneManager.run("stages-status-bar", { user });
-      }
-    }
-
-    authCheck();
-  }
-
-  private createLoadingbar(): void {
-    this.loadingBar = this.add.graphics();
-    this.loadingBar.fillStyle(0x023047, 1);
-    this.loadingBar.fillRect(200, 270, 400, 50);
-    this.progressBar = this.add.graphics();
   }
 }

@@ -1,8 +1,9 @@
 import Phaser from "phaser";
+import { COLOR } from "../../constants";
 
 class PreviewCricle extends Phaser.GameObjects.Arc {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 10, 0, 360, true, 0xef524f);
+    super(scene, x, y, 10, 0, 360, true, COLOR.RED);
   }
 }
 
@@ -18,8 +19,6 @@ export default class ShotPreview {
   showPreview(x: number, y: number, vector: Phaser.Math.Vector2, radius: number) {
     for (let i = 0; i < this.total; i++) {
       const preview = new PreviewCricle(this.scene, x, y);
-
-      preview.setAlpha(0);
 
       this.scene.add.existing(preview);
       this.previews.push(preview);
@@ -59,7 +58,7 @@ export default class ShotPreview {
     this.previews.length = 0;
   }
 
-  shotPreviewsLength() {
+  get shotPreviewsLength() {
     return this.previews.length;
   }
 

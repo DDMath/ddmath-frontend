@@ -1,15 +1,14 @@
 import Phaser from "phaser";
 
 import Grid from "../common/Grid";
-import GameBoard from "../stage2/GameBoard";
-import hitArea from "../stage2/puzzleHitArea";
-import DraggableCard from "../stage2/DraggableCard";
+import GameBoard from "./GameBoard";
+import hitArea from "./puzzleHitArea";
+import DraggableCard from "./DraggableCard";
 
+import { SCENE, GAME, SOUND } from "../../constants";
 import { updateFinalStageRecord } from "../../api";
 import { sceneEvents } from "../events/EventsManager";
-import { puzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
-
-const TOTAL_TARGET_SCORE = 9;
+import { puzzleGameCardTypes } from "./puzzleGameCardTypes";
 
 enum GameState {
   Playing,
@@ -20,7 +19,7 @@ export default class PuzzleGame extends Phaser.Scene {
   private grid!: Grid;
 
   constructor() {
-    super("puzzle-game");
+    super(SCENE.PUZZLE_GAME);
   }
 
   init() {
@@ -31,10 +30,10 @@ export default class PuzzleGame extends Phaser.Scene {
   }
 
   create() {
-    this.scene.run("status-bar", {
+    this.scene.run(SCENE.STATUS_BAR, {
       scene: this,
-      game: "puzzle-game",
-      totalScore: TOTAL_TARGET_SCORE,
+      game: SCENE.PUZZLE_GAME,
+      totalScore: GAME.PUZZLE_GAME_TOTAL_TARGET_SCORE,
     });
 
     this.createGameboard();
@@ -58,7 +57,7 @@ export default class PuzzleGame extends Phaser.Scene {
     });
   }
 
-  checkCorrection<P, D extends DraggableCard>(this: Grid, pointer: P, gameObject: D) {
+  private checkCorrection<P, D extends DraggableCard>(this: Grid, pointer: P, gameObject: D) {
     if ((this.scene as PuzzleGame).state === GameState.GameOver) {
       return;
     }
@@ -90,19 +89,19 @@ export default class PuzzleGame extends Phaser.Scene {
         sceneEvents.emit("get-point", this.completedCards);
 
         shouldTurnOnBeep = false;
-        (this.scene as PuzzleGame).sound.play("correct", { volume: 0.3 });
+        (this.scene as PuzzleGame).sound.play(SOUND.CORRECT, { volume: 0.3 });
       }
     }
 
     if (shouldTurnOnBeep) {
-      (this.scene as PuzzleGame).sound.play("beep", { volume: 0.3 });
+      (this.scene as PuzzleGame).sound.play(SOUND.BEEP, { volume: 0.3 });
     }
 
-    if (this.completedCards === TOTAL_TARGET_SCORE) {
+    if (this.completedCards === GAME.PUZZLE_GAME_TOTAL_TARGET_SCORE) {
       (this.scene as PuzzleGame).state = GameState.GameOver;
 
       sceneEvents.emit("gameover");
-      updateFinalStageRecord("puzzle-game");
+      updateFinalStageRecord(SCENE.PUZZLE_GAME);
     }
 
     gameObject.x = gameObject.originalX;

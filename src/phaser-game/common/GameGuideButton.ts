@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import addButtonEvent from "./ButtonEvent";
 
 export default class GameGuideButton extends Phaser.GameObjects.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number, image: string, game: string) {
@@ -7,19 +8,11 @@ export default class GameGuideButton extends Phaser.GameObjects.Sprite {
 
     this.setInteractive();
 
-    this.on("pointerover", function (this: Phaser.GameObjects.Image) {
-      this.setTint(0xf8edeb);
-    });
-
-    this.on("pointerout", function (this: Phaser.GameObjects.Image) {
-      this.clearTint();
-    });
-
-    this.on("pointerdown", function (this: Phaser.GameObjects.Image) {
+    addButtonEvent(this, () => {
       const sceneManager = this.scene;
-      const sceneName = game + "-guide";
+      const newScene = game + "-guide";
 
-      sceneManager.scene.run(sceneName);
+      sceneManager.scene.run(newScene);
     });
   }
 }

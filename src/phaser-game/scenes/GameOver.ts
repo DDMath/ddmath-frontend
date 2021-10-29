@@ -1,11 +1,12 @@
 import Phaser from "phaser";
+import { GAME, SCENE, COLOR } from "../../constants";
 
 interface IGame {
   game: string;
 }
 export default class GameOver extends Phaser.Scene {
   constructor() {
-    super("game-over");
+    super(SCENE.GAMEOVER);
   }
 
   create({ game }: IGame) {
@@ -15,11 +16,11 @@ export default class GameOver extends Phaser.Scene {
     const y = height / 2;
 
     const button = this.add
-      .text(x, y, "Congraturations! \nClick to go home", {
+      .text(x, y, GAME.GAMEOVER_MESSAGE, {
         fontSize: "32px",
-        color: "#fff",
+        color: COLOR.WHITE_HEX,
         fontFamily: "Arial",
-        backgroundColor: "#ef524f",
+        backgroundColor: COLOR.RED_HEX,
         padding: { left: 30, right: 30, top: 30, bottom: 30 },
       })
       .setOrigin(0.5);
@@ -27,20 +28,20 @@ export default class GameOver extends Phaser.Scene {
     button.setInteractive();
 
     button.once("pointerup", async () => {
-      this.scene.stop("game-over");
-      this.scene.stop("status-bar");
+      this.scene.stop(SCENE.GAMEOVER);
+      this.scene.stop(SCENE.STATUS_BAR);
       this.scene.stop(game);
 
       let stage = 0;
 
       switch (game) {
-        case "shooting-game":
+        case SCENE.SHOOTING_GAME:
           stage = 1;
           break;
-        case "puzzle-game":
+        case SCENE.PUZZLE_GAME:
           stage = 2;
           break;
-        case "matching-game":
+        case SCENE.MATCHING_GAME:
           stage = 3;
           break;
         default:
@@ -48,10 +49,10 @@ export default class GameOver extends Phaser.Scene {
       }
 
       const user = this.registry.get("user");
-      user.lastStage = stage;
+      user.lastStage = Math.max(stage, user.lastStage);
 
-      this.scene.start("stages");
-      this.scene.run("stages-status-bar", { user });
+      this.scene.start(SCENE.LOBBY);
+      this.scene.run(SCENE.LOBBY_STATUS_BAR, { user });
     });
   }
 }

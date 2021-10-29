@@ -4,13 +4,15 @@ import Enemy from "./Enemy";
 import Cannon from "./Cannon";
 import ShotPreview from "./ShotPreview";
 
+import { ANIMATION, COLOR, SCENE } from "../../constants";
+
 export default class Stage1GameGuide extends Phaser.Scene {
   private cursor!: Phaser.GameObjects.Sprite;
   private cannon!: Cannon;
   private shotPreview!: ShotPreview;
 
   constructor() {
-    super("shooting-game-guide");
+    super(SCENE.SHOOTING_GAME_GUIDE);
   }
 
   init() {
@@ -33,12 +35,13 @@ export default class Stage1GameGuide extends Phaser.Scene {
   private createEnemies() {
     for (let i = 0; i < 5; i++) {
       const enemy = new Enemy(this, 80 * i + 240, 200, i + 1);
+
       enemy.setImmovable(true).setGravityY(-30);
     }
   }
 
   private createClickGuide() {
-    this.cursor = this.add.sprite(300, 320, "cursor-image").play("cursor");
+    this.cursor = this.add.sprite(300, 320, "cursor-image").play(ANIMATION.CURSOR);
 
     this.tweens.add({
       targets: this.cursor,
@@ -85,11 +88,11 @@ export default class Stage1GameGuide extends Phaser.Scene {
   }
 
   private createArrow() {
-    this.add.line(400, 140, 0, 0, 300, 0, 0xef524f).setLineWidth(5);
-    this.add.line(550, 140, 0, 0, 30, 0, 0xef524f).setLineWidth(16, 1);
+    this.add.line(400, 140, 0, 0, 300, 0, COLOR.RED).setLineWidth(5);
+    this.add.line(550, 140, 0, 0, 30, 0, COLOR.RED).setLineWidth(16, 1);
   }
 
   private handlePointerUp() {
-    this.scene.stop("shooting-game-guide");
+    this.scene.stop(SCENE.SHOOTING_GAME_GUIDE);
   }
 }

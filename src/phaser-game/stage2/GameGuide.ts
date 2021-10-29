@@ -1,14 +1,14 @@
 import Phaser from "phaser";
 
 import Grid from "../common/Grid";
+import { ANIMATION, SCENE } from "../../constants";
 
-export default class Stage3GameGuide extends Phaser.Scene {
+export default class Stage2GameGuide extends Phaser.Scene {
   private grid!: Grid;
-  private line!: Phaser.GameObjects.Line;
   private cursor!: Phaser.GameObjects.Sprite;
 
   constructor() {
-    super("matching-game-guide");
+    super(SCENE.PUZZLE_GAME_GUIDE);
   }
 
   init() {
@@ -26,22 +26,17 @@ export default class Stage3GameGuide extends Phaser.Scene {
     this.grid = new Grid({
       scene: this,
       rows: 1,
-      columns: 2,
-      xStart: 230,
+      columns: 1,
+      xStart: 670,
       yStart: 300,
-      xOffset: 340,
-      yOffset: 120,
-      game: "matching-game",
+      xOffset: 0,
+      yOffset: 0,
+      game: "puzzle-game",
       cardTypes: [
         {
-          name: "star",
-          image: "star-green",
-          value: "green",
-        },
-        {
-          name: "star",
-          image: "star-blue",
-          value: "blue",
+          name: "orange2",
+          image: "orange-2",
+          value: 2,
         },
       ],
       onDragEnd: () => {
@@ -49,34 +44,38 @@ export default class Stage3GameGuide extends Phaser.Scene {
       },
     });
 
-    this.grid.addCards(0);
-    this.grid.addDraggablePoint(0);
+    this.grid.addDraggableCards(0);
   }
 
   private createClickGuide() {
-    this.cursor = this.add.sprite(325, 330, "cursor-image").play("cursor").setDepth(5);
-    this.line = this.add.line(400, 300, 0, 0, 200, 0, 0xef524f).setLineWidth(2).setAlpha(0);
+    this.cursor = this.add.sprite(700, 350, "cursor-image").play(ANIMATION.CURSOR).setDepth(5);
+
+    const card = this.grid.cards[0];
 
     this.tweens.add({
       targets: this.cursor,
       duration: 1000,
-      x: this.cursor.x + 200,
+      x: 377,
+      y: 417,
       repeat: -1,
       hold: 500,
-      delay: 300,
+      delay: 500,
+      repeatDelay: 500,
     });
 
     this.tweens.add({
-      targets: this.line,
+      targets: card,
       duration: 1000,
+      x: 347,
+      y: 367,
       repeat: -1,
       hold: 500,
-      delay: 300,
-      alpha: 1,
+      delay: 500,
+      repeatDelay: 500,
     });
   }
 
   private handlePointerUp() {
-    this.scene.stop("matching-game-guide");
+    this.scene.stop(SCENE.PUZZLE_GAME_GUIDE);
   }
 }

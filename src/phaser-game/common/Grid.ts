@@ -1,28 +1,14 @@
 import Phaser from "phaser";
 
-import shuffleArray from "../../utils/shuffleArray";
+import CardBase from "./CardBase";
 import DraggableCard from "../stage2/DraggableCard";
 import DraggablePoint from "../stage3/DraggablePoint";
 
+import shuffleArray from "../../utils/shuffleArray";
+
+import { IGridData } from "./../../types/game";
 import { PuzzleGameCardTypes } from "../stage2/puzzleGameCardTypes";
 import { MatchingGameCardTypes } from "../stage3/matchingGameCardTypes";
-import CardBase from "./CardBase";
-
-interface DataType {
-  rows: number;
-  columns: number;
-  xStart: number;
-  yStart: number;
-  xOffset: number;
-  yOffset: number;
-  scene: Phaser.Scene;
-  game: "puzzle-game" | "matching-game";
-  cardTypes: PuzzleGameCardTypes[] | MatchingGameCardTypes[];
-  onDragEnd(
-    pointer: Phaser.Input.Pointer,
-    gameObject?: DraggableCard | Phaser.GameObjects.Sprite
-  ): void;
-}
 
 export default class Grid {
   private rows: number;
@@ -32,9 +18,9 @@ export default class Grid {
   private xOffset: number;
   private yOffset: number;
   private cardOrder: number[];
-  private _completedCards = 0;
 
   public scene: Phaser.Scene;
+  private _completedCards = 0;
   private _cards: DraggableCard[] = [];
   private cardTypes: PuzzleGameCardTypes[] | MatchingGameCardTypes[];
 
@@ -43,7 +29,7 @@ export default class Grid {
     gameObject?: DraggableCard | Phaser.GameObjects.Sprite
   ) => void;
 
-  constructor(data: DataType) {
+  constructor(data: IGridData) {
     const { scene, rows, columns, xOffset, yOffset, xStart, yStart, cardTypes, onDragEnd } = data;
 
     this.scene = scene;

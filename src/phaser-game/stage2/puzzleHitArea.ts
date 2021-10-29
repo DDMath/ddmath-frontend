@@ -1,8 +1,8 @@
-type Area = {
+interface Area {
   name: string;
   pointX: number;
   pointY: number;
-};
+}
 
 const hitArea: Area[] = [
   {

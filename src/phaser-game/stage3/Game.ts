@@ -1,17 +1,16 @@
 import Phaser from "phaser";
 import Grid from "../common/Grid";
+import DraggablePoint from "./DraggablePoint";
 
-import DraggablePoint from "../stage3/DraggablePoint";
-import { matchingGameCardTypes } from "../stage3/matchingGameCardTypes";
+import { GAME, SCENE, SOUND } from "../../constants";
 import { sceneEvents } from "../events/EventsManager";
 import { updateFinalStageRecord } from "../../api";
+import { matchingGameCardTypes } from "./matchingGameCardTypes";
 
 enum GameState {
   Playing,
   GameOver,
 }
-
-const TOTAL_TARGET_SCORE = 8;
 
 export default class MatchingGame extends Phaser.Scene {
   private grid!: Grid;
@@ -25,7 +24,7 @@ export default class MatchingGame extends Phaser.Scene {
   private _points: Phaser.GameObjects.Sprite[] = [];
 
   constructor() {
-    super("matching-game");
+    super(SCENE.MATCHING_GAME);
   }
 
   init() {
@@ -36,29 +35,13 @@ export default class MatchingGame extends Phaser.Scene {
     this.drawing = false;
     this.completedLines = [];
 
-    this.add.image(0, 0, "background3").setOrigin(0, 0);
+    this.add.tileSprite(0, 0, 800, 600, "background3").setOrigin(0);
     this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xef524f } });
   }
 
   create() {
-    this.scene.run("status-bar", {
-      scene: this,
-      game: "matching-game",
-      totalScore: TOTAL_TARGET_SCORE,
-    });
-
-    this.grid = new Grid({
-      scene: this,
-      rows: 4,
-      columns: 3,
-      xStart: 150,
-      yStart: 500,
-      xOffset: 260,
-      yOffset: 120,
-      game: "matching-game",
-      cardTypes: matchingGameCardTypes,
-      onDragEnd: this.checkCorrection,
-    });
+    this.createStatusBar();
+    this.createGameboard();
 
     this.grid.addCards(0);
     this.grid.addDraggablePoint(0);
@@ -86,10 +69,12 @@ export default class MatchingGame extends Phaser.Scene {
 
   checkCorrection(this: Grid, pointer: Phaser.Input.Pointer, point: Phaser.GameObjects.Sprite) {
     const { name, value } = point.parentContainer as DraggablePoint;
+    const scene = this.scene as MatchingGame;
+
     let shouldTurnOnBeep = true;
 
-    for (let i = 0; i < (this.scene as MatchingGame).points.length; i++) {
-      const targetCard = (this.scene as MatchingGame).points[i].parentContainer;
+    for (let i = 0; i < scene.points.length; i++) {
+      const targetCard = scene.points[i].parentContainer;
       const {
         x: pointX,
         y: pointY,
@@ -115,29 +100,52 @@ export default class MatchingGame extends Phaser.Scene {
 
         point.disableInteractive();
 
-        (this.scene as MatchingGame).completedLines.push(completedLine);
-        sceneEvents.emit("get-point", (this.scene as MatchingGame).completedLines.length);
+        scene.completedLines.push(completedLine);
+        sceneEvents.emit("get-point", scene.completedLines.length);
 
         shouldTurnOnBeep = false;
-        (this.scene as MatchingGame).sound.play("correct", { volume: 0.3 });
+        scene.sound.play(SOUND.CORRECT, { volume: 0.3 });
       }
     }
 
     if (shouldTurnOnBeep) {
-      (this.scene as MatchingGame).sound.play("beep", { volume: 0.3 });
+      scene.sound.play(SOUND.BEEP, { volume: 0.3 });
     }
 
     point.x = point.data.get("originalX");
     point.y = point.data.get("originalY");
 
-    (this.scene as MatchingGame).drawing = false;
+    scene.drawing = false;
 
-    if ((this.scene as MatchingGame).completedLines.length === TOTAL_TARGET_SCORE) {
-      (this.scene as MatchingGame).state = GameState.GameOver;
+    if (scene.completedLines.length === GAME.MATCHING_GAME_TOTAL_TARGET_SCORE) {
+      scene.state = GameState.GameOver;
 
       sceneEvents.emit("gameover");
-      updateFinalStageRecord("matching-game");
+      updateFinalStageRecord(SCENE.MATCHING_GAME);
     }
+  }
+
+  private createStatusBar() {
+    this.scene.run(SCENE.STATUS_BAR, {
+      scene: this,
+      game: SCENE.MATCHING_GAME,
+      totalScore: GAME.MATCHING_GAME_TOTAL_TARGET_SCORE,
+    });
+  }
+
+  private createGameboard() {
+    this.grid = new Grid({
+      scene: this,
+      rows: 4,
+      columns: 3,
+      xStart: 150,
+      yStart: 500,
+      xOffset: 260,
+      yOffset: 120,
+      game: "matching-game",
+      cardTypes: matchingGameCardTypes,
+      onDragEnd: this.checkCorrection,
+    });
   }
 
   update() {

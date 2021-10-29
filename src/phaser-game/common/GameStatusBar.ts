@@ -1,13 +1,10 @@
 import Phaser from "phaser";
-import GameGuideButton from "./GameGuideButton";
 import GoBackButton from "./GoBackButton";
-import { sceneEvents } from "../events/EventsManager";
+import GameGuideButton from "./GameGuideButton";
 
-interface StatusBarData {
-  scene: Phaser.Scene;
-  game: string;
-  totalScore: number;
-}
+import { SCENE, COLOR } from "../../constants";
+import { sceneEvents } from "../events/EventsManager";
+import { IStatusBarData } from "./../../types/game";
 
 export default class GameStatusBar extends Phaser.Scene {
   private stars!: Phaser.GameObjects.Group;
@@ -15,10 +12,10 @@ export default class GameStatusBar extends Phaser.Scene {
   private gameName!: string;
 
   constructor() {
-    super("status-bar");
+    super(SCENE.STATUS_BAR);
   }
 
-  create(data: StatusBarData) {
+  create(data: IStatusBarData) {
     const { totalScore, game } = data;
 
     this.createStatusBarElements(data);
@@ -35,7 +32,7 @@ export default class GameStatusBar extends Phaser.Scene {
 
   private increaseOnePoint(point: number) {
     if (this.targetScore === point) {
-      this.scene.run("game-over", { game: this.gameName });
+      this.scene.run(SCENE.GAMEOVER, { game: this.gameName });
     }
 
     this.stars.children.each((element, index) => {
@@ -70,7 +67,7 @@ export default class GameStatusBar extends Phaser.Scene {
     });
   }
 
-  private createStatusBarElements(data: StatusBarData) {
+  private createStatusBarElements(data: IStatusBarData) {
     const { totalScore, game, scene } = data;
     const color = this.getStatusBarColor(game);
 
@@ -94,13 +91,13 @@ export default class GameStatusBar extends Phaser.Scene {
 
   private getStatusBarColor(game: string) {
     const color =
-      game === "matching-game"
-        ? 0x6d6875
-        : game === "puzzle-game"
-        ? 0x9c6644
-        : game === "shooting-game"
-        ? 0xad7f6f
-        : 0xfff;
+      game === SCENE.MATCHING_GAME
+        ? COLOR.DARKGRAY
+        : game === SCENE.PUZZLE_GAME
+        ? COLOR.BROWN
+        : game === SCENE.SHOOTING_GAME
+        ? COLOR.DARKPINK
+        : COLOR.WHITE;
 
     return color;
   }

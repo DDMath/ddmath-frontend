@@ -1,25 +1,20 @@
 import Phaser from "phaser";
-import MatchingGame from "../scenes/MatchingGame";
-import DraggableCard from "../stage2/DraggableCard";
 
-interface DataType {
-  scene: Phaser.Scene;
-  x: number;
-  y: number;
-  name: string;
-  image: string;
-  value: string | number;
-}
+import MatchingGame from "../stage3/Game";
+
+import { COLOR } from "../../constants";
+import { ICardBaseData } from "../../types/game";
 
 export default class CardBase extends Phaser.GameObjects.Container {
   private spriteCard: Phaser.GameObjects.Sprite;
   private _originalX!: number;
   private _originalY!: number;
-  public value: string | number;
-  public fruit: string;
+
+  public readonly value: string | number;
+  public readonly fruit: string;
   public readonly name: string;
 
-  constructor(data: DataType) {
+  constructor(data: ICardBaseData) {
     const { scene, x, y, value, name, image } = data;
 
     const spriteCard = new Phaser.GameObjects.Sprite(scene, 2, 4, "card");
@@ -44,13 +39,8 @@ export default class CardBase extends Phaser.GameObjects.Container {
 
     this.setSize(this.spriteCard.width, this.spriteCard.height);
 
-    this.on("pointerover", function (this: DraggableCard) {
-      this.spriteCard.setTint(0xf8edeb);
-    });
-
-    this.on("pointerout", function (this: DraggableCard) {
-      this.spriteCard.clearTint();
-    });
+    this.on("pointerover", () => this.spriteCard.setTint(COLOR.TINT));
+    this.on("pointerout", () => this.spriteCard.clearTint());
 
     this.scene.add.existing(this);
   }

@@ -14,7 +14,7 @@ function Welcome() {
       const userInfo = await googleLogin();
 
       if (userInfo) {
-        history.push("/stages");
+        history.push("/game");
       }
     } catch (error) {
       console.log(error);

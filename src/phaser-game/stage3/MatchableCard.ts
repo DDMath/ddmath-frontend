@@ -1,18 +1,10 @@
 import Phaser from "phaser";
-import CardBase from "../common/CardBase";
 
-type CardData = {
-  x: number;
-  y: number;
-  name: string;
-  image: string;
-  value: string | number;
-  scene: Phaser.Scene;
-  ondragend(pointer: Phaser.Input.Pointer, gameObject: MatchableCard): void;
-};
+import CardBase from "../common/CardBase";
+import { ICardData } from "../../types/game";
 
 export default class MatchableCard extends CardBase {
-  constructor(data: CardData) {
+  constructor(data: ICardData) {
     const { scene, ondragend } = data;
 
     super(data);

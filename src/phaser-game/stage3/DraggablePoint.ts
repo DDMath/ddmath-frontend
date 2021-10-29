@@ -1,52 +1,26 @@
 import Phaser from "phaser";
-import MatchingGame from "../scenes/MatchingGame";
 
-type PointData = {
-  x: number;
-  y: number;
-  image: string;
-  name: string;
-  value: string | number;
-  scene: Phaser.Scene;
-  ondragend(pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.Sprite): void;
-};
+import MatchingGame from "./Game";
+import { SOUND } from "../../constants";
+import { IDraggablePoint } from "../../types/game";
 
 export default class DraggablePoint extends Phaser.GameObjects.Container {
   public name: string;
   public value: string | number;
 
-  constructor(data: PointData) {
+  constructor(data: IDraggablePoint) {
     const { x, y, name, value, scene, ondragend } = data;
 
     const pointImage = new Phaser.GameObjects.Image(scene, 70, 0, "point");
     const leftPoint = new Phaser.GameObjects.Sprite(scene, -70, 0, "point");
     const rightPoint = new Phaser.GameObjects.Sprite(scene, 70, 0, "point");
 
-    rightPoint.setSize(rightPoint.displayWidth + 50, rightPoint.displayHeight + 50);
-    rightPoint.setInteractive({ draggable: rightPoint });
-
     super(scene, x, y, [leftPoint, rightPoint, pointImage]);
 
     this.name = name;
     this.value = value;
 
-    (scene as MatchingGame).addNewPoint = leftPoint;
-
-    rightPoint.setDataEnabled();
-
-    rightPoint.data.set("originalX", 70);
-    rightPoint.data.set("originalY", 0);
-
-    if (value === "green") {
-      leftPoint.alpha = 0;
-    }
-
-    if (value === "blue") {
-      rightPoint.destroy();
-      pointImage.destroy();
-    }
-
-    scene.add.existing(this);
+    this.setTouchArea(rightPoint);
 
     this.scene.input.on(
       "dragstart",
@@ -55,7 +29,7 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
           return;
         }
 
-        this.scene.sound.play("jump", { volume: 0.5 });
+        this.scene.sound.play(SOUND.DRAG, { volume: 0.5 });
       }
     );
 
@@ -97,5 +71,31 @@ export default class DraggablePoint extends Phaser.GameObjects.Container {
         ondragend(pointer, gameObject);
       }
     );
+
+    (scene as MatchingGame).addNewPoint = leftPoint;
+
+    if (value === "green") {
+      leftPoint.alpha = 0;
+    }
+
+    if (value === "blue") {
+      rightPoint.destroy();
+      pointImage.destroy();
+    }
+
+    scene.add.existing(this);
+  }
+
+  private setTouchArea(rightPoint: Phaser.GameObjects.Sprite) {
+    rightPoint.setSize(rightPoint.displayWidth + 130, rightPoint.displayHeight + 80);
+    rightPoint.setInteractive({ draggable: true });
+
+    rightPoint.input.hitArea.x -= 100;
+    rightPoint.input.hitArea.y -= 50;
+
+    rightPoint.setDataEnabled();
+
+    rightPoint.data.set("originalX", 70);
+    rightPoint.data.set("originalY", 0);
   }
 }

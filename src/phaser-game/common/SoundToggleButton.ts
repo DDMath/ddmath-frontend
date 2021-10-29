@@ -1,5 +1,8 @@
 import Phaser from "phaser";
+
+import { SOUND } from "../../constants";
 import { sceneEvents } from "../events/EventsManager";
+import addButtonEvent from "./ButtonEvent";
 
 export default class SoundToggleButton extends Phaser.GameObjects.Sprite {
   private music: Phaser.Sound.BaseSound;
@@ -9,19 +12,10 @@ export default class SoundToggleButton extends Phaser.GameObjects.Sprite {
 
     scene.add.existing(this);
 
-    this.music = this.scene.sound.get("background-music");
+    this.music = this.scene.sound.get(SOUND.BACKGROUND_MUSIC);
     this.setInteractive().setOrigin(0, 0);
-    this.setTextureImage();
 
-    this.on("pointerover", function (this: Phaser.GameObjects.Image) {
-      this.setTint(0xf8edeb);
-    });
-
-    this.on("pointerout", function (this: Phaser.GameObjects.Image) {
-      this.clearTint();
-    });
-
-    this.on("pointerdown", function (this: SoundToggleButton) {
+    addButtonEvent(this, () => {
       sceneEvents.emit("toggleBackgroundMusic");
 
       this.setTextureImage();
@@ -29,10 +23,6 @@ export default class SoundToggleButton extends Phaser.GameObjects.Sprite {
   }
 
   setTextureImage() {
-    if (this.music.isPlaying) {
-      this.setTexture("sound-on");
-    } else {
-      this.setTexture("sound-off");
-    }
+    this.music.isPlaying ? this.setTexture("sound-on") : this.setTexture("sound-off");
   }
 }

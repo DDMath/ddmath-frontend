@@ -1,4 +1,7 @@
 import Phaser from "phaser";
+
+import addButtonEvent from "./ButtonEvent";
+import { SCENE } from "../../constants";
 import { sceneEvents } from "../events/EventsManager";
 
 export default class GoBackButton extends Phaser.GameObjects.Sprite {
@@ -8,23 +11,16 @@ export default class GoBackButton extends Phaser.GameObjects.Sprite {
 
     this.setInteractive();
 
-    this.on("pointerover", function (this: Phaser.GameObjects.Image) {
-      this.setTint(0xf8edeb);
-    });
-
-    this.on("pointerout", function (this: Phaser.GameObjects.Image) {
-      this.clearTint();
-    });
-
-    this.on("pointerdown", function (this: Phaser.GameObjects.Image) {
+    addButtonEvent(this, () => {
       const sceneManager = this.scene;
 
       sceneManager.scene.stop(game);
-      sceneManager.scene.stop("status-bar");
-      sceneManager.scene.start("stages");
+      sceneManager.scene.stop(SCENE.STATUS_BAR);
+
+      sceneManager.scene.start(SCENE.LOBBY);
 
       const user = sceneManager.registry.get("user");
-      sceneManager.scene.run("stages-status-bar", { user });
+      sceneManager.scene.run(SCENE.LOBBY_STATUS_BAR, { user });
     });
 
     sceneEvents.on("gameover", this.disableButton, this);

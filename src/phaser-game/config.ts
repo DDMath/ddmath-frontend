@@ -1,16 +1,16 @@
 import Phaser from "phaser";
 
-import Stages from "./scenes/Stages";
+import Lobby from "./scenes/Lobby";
 import GameOver from "./scenes/GameOver";
 import Preloader from "./scenes/Preloader";
-import PuzzleGame from "./scenes/PuzzleGame";
-import ShootingGame from "./scenes/ShootingGame";
-import MatchingGame from "./scenes/MatchingGame";
+import ShootingGame from "./stage1/Game";
+import PuzzleGame from "./stage2/Game";
+import MatchingGame from "./stage3/Game";
 import GameStatusBar from "./common/GameStatusBar";
-import StagesStatusBar from "./scenes/StagesStatusBar";
-import Stage1GameGuide from "./stage1/Stage1GameGuide";
-import Stage2GameGuide from "./stage2/Stage2GameGuide";
-import Stage3GameGuide from "./stage3/Stage3GameGuide";
+import LobbyStatusBar from "./scenes/LobbyStatusBar";
+import Stage1GameGuide from "./stage1/GameGuide";
+import Stage2GameGuide from "./stage2/GameGuide";
+import Stage3GameGuide from "./stage3/GameGuide";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -31,8 +31,8 @@ export const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: "#eae4e9",
   scene: [
     Preloader,
-    Stages,
-    StagesStatusBar,
+    Lobby,
+    LobbyStatusBar,
     PuzzleGame,
     MatchingGame,
     ShootingGame,

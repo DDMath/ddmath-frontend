@@ -20,7 +20,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     body.setAllowGravity(false);
   }
 
-  loadBall() {
+  loadBall(): Ball {
     const width = this.scene.scale.width;
     const height = this.scene.scale.height;
 

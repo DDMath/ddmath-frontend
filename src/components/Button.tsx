@@ -5,6 +5,7 @@ type ButtonProps = {
   text?: string;
   className?: string;
   children?: JSX.Element | JSX.Element[] | string;
+  onClick: () => void;
 };
 
 function Button({ children, className, onClick, text }: ButtonProps) {

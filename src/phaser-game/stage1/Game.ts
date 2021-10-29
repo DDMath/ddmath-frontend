@@ -1,18 +1,17 @@
 import Phaser from "phaser";
 
-import Ball from "../stage1/Ball";
-import Enemy from "../stage1/Enemy";
-import Cannon from "../stage1/Cannon";
+import Ball from "./Ball";
+import Enemy from "./Enemy";
+import Cannon from "./Cannon";
 
-import { sceneEvents } from "../events/EventsManager";
 import { updateFinalStageRecord } from "../../api";
+import { sceneEvents } from "../events/EventsManager";
+import { GAME, SCENE, SOUND } from "../../constants";
 
 enum GameState {
   Playing,
   GameOver,
 }
-
-const TOTAL_ENEMY_NUMBER = 10;
 
 export default class ShootingGame extends Phaser.Scene {
   private order!: number;
@@ -23,13 +22,12 @@ export default class ShootingGame extends Phaser.Scene {
   private enemyGroup!: Phaser.Physics.Arcade.Group;
 
   constructor() {
-    super("shooting-game");
+    super(SCENE.SHOOTING_GAME);
   }
 
   init() {
     this.cameras.main.fadeIn(800);
-
-    this.add.image(0, 0, "background2").setOrigin(0, 0);
+    this.add.tileSprite(0, 0, 800, 600, "background2").setOrigin(0);
 
     this.order = 1;
     this.state = GameState.Playing;
@@ -38,11 +36,7 @@ export default class ShootingGame extends Phaser.Scene {
   }
 
   create() {
-    this.scene.run("status-bar", {
-      scene: this,
-      game: "shooting-game",
-      totalScore: TOTAL_ENEMY_NUMBER,
-    });
+    this.createStatusBar();
 
     const width = this.scale.width;
     const height = this.scale.height;
@@ -53,10 +47,7 @@ export default class ShootingGame extends Phaser.Scene {
     this.createEnemyGroup();
     this.createEnemies(this.enemyGroup);
 
-    this.physics.world.setBounds(0, 50, width, height - 50);
-
-    this.physics.add.collider(this.enemyGroup, this.cannon);
-    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
+    this.setCollisionGroup();
   }
 
   private handlePointerUp() {
@@ -64,7 +55,7 @@ export default class ShootingGame extends Phaser.Scene {
       return;
     }
 
-    this.sound.play("click", { volume: 0.3 });
+    this.sound.play(SOUND.CLICK, { volume: 0.3 });
 
     const ball = this.cannon.loadBall();
 
@@ -86,7 +77,7 @@ export default class ShootingGame extends Phaser.Scene {
   }
 
   private createEnemies(enemyGroup: Phaser.Physics.Arcade.Group) {
-    for (let i = 0; i < TOTAL_ENEMY_NUMBER; i++) {
+    for (let i = 0; i < GAME.SHOOTING_GAME_TOTAL_TARGET_SCORE; i++) {
       const enemy = new Enemy(this, Math.random() * 200 + 300, Math.random() * 100, i + 1);
 
       enemyGroup.add(enemy).setVelocity(50, -150);
@@ -96,7 +87,7 @@ export default class ShootingGame extends Phaser.Scene {
 
   private checkCollision(ball: Ball) {
     this.physics.add.collider(ball, this.enemyGroup, (ball, enemy) => {
-      (ball as Ball).destroy();
+      ball.destroy();
 
       if (this.order !== (enemy as Enemy).value) {
         return;
@@ -106,15 +97,33 @@ export default class ShootingGame extends Phaser.Scene {
       sceneEvents.emit("get-point", this.order);
 
       this.order++;
-      this.sound.play("pop", { volume: 0.5 });
+      this.sound.play(SOUND.POP, { volume: 0.5 });
 
-      if (this.order === TOTAL_ENEMY_NUMBER + 1) {
+      if (this.order === GAME.SHOOTING_GAME_TOTAL_TARGET_SCORE + 1) {
         this.state = GameState.GameOver;
 
         sceneEvents.emit("gameover");
-        updateFinalStageRecord("shooting-game");
+        updateFinalStageRecord(SCENE.SHOOTING_GAME);
       }
     });
+  }
+
+  private createStatusBar() {
+    this.scene.run(SCENE.STATUS_BAR, {
+      scene: this,
+      game: SCENE.SHOOTING_GAME,
+      totalScore: GAME.SHOOTING_GAME_TOTAL_TARGET_SCORE,
+    });
+  }
+
+  private setCollisionGroup() {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    this.physics.world.setBounds(0, 50, width, height - 50);
+
+    this.physics.add.collider(this.enemyGroup, this.cannon);
+    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
   }
 
   update() {
