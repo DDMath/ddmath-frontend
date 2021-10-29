@@ -8,3 +8,9 @@ export interface IUserData {
     };
   };
 }
+
+export interface IUserStatus {
+  _id: string;
+  email: string;
+  lastStage: string;
+}
