@@ -1,39 +1,39 @@
 {
   "frames": {
     "coin-01.png": {
-      "frame": { "x": 0, "y": 0, "w": 50, "h": 50 },
+      "frame": { "x": 0, "y": 0, "w": 256, "h": 256 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
-      "sourceSize": { "w": 50, "h": 50 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 }
     },
     "coin-02.png": {
-      "frame": { "x": 50, "y": 0, "w": 50, "h": 50 },
+      "frame": { "x": 256, "y": 0, "w": 256, "h": 256 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
-      "sourceSize": { "w": 50, "h": 50 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 }
     },
     "coin-03.png": {
-      "frame": { "x": 100, "y": 0, "w": 50, "h": 50 },
+      "frame": { "x": 512, "y": 0, "w": 256, "h": 256 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
-      "sourceSize": { "w": 50, "h": 50 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 }
     },
     "coin-04.png": {
-      "frame": { "x": 150, "y": 0, "w": 50, "h": 50 },
+      "frame": { "x": 768, "y": 0, "w": 256, "h": 256 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
-      "sourceSize": { "w": 50, "h": 50 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 }
     },
     "coin-05.png": {
-      "frame": { "x": 200, "y": 0, "w": 50, "h": 50 },
+      "frame": { "x": 1024, "y": 0, "w": 256, "h": 256 },
       "rotated": false,
       "trimmed": false,
-      "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 50 },
-      "sourceSize": { "w": 50, "h": 50 }
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 256, "h": 256 },
+      "sourceSize": { "w": 256, "h": 256 }
     }
   },
   "meta": {
@@ -41,8 +41,8 @@
     "version": "1.0",
     "image": "coin.png",
     "format": "RGBA8888",
-    "size": { "w": 250, "h": 50 },
+    "size": { "w": 1280, "h": 256 },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:1900a5889dd93b4677d85a7b08668437:cb65cf850a62bf2997b5022ba559d3df:37dcde439de7f7292f96409a4c62c08e$"
+    "smartupdate": "$TexturePacker:SmartUpdate:4bf236419d167d3082c4abfdd8f35500:3d3708e585e4a1aa58a971c33ea8d61f:37dcde439de7f7292f96409a4c62c08e$"
   }
 }
