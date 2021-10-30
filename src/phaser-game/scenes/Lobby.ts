@@ -116,7 +116,7 @@ export default class Lobby extends Phaser.Scene {
         .setOrigin(0.5, 0.5)
         .setGravity(0, -30)
         .setOffset(0, 0)
-        .setSize(120, 120)
+        .setSize(160, 160)
         .setScale(0.25)
         .setDepth(3)
         .setInteractive()

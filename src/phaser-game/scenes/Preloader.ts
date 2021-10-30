@@ -4,6 +4,7 @@ import { sceneEvents } from "../events/EventsManager";
 
 import createCharacterAnimation from "../animations/Character";
 import { SCENE } from "../../constants";
+
 export default class Preloader extends Phaser.Scene {
   private loadingBar!: Phaser.GameObjects.Graphics;
   private progressBar!: Phaser.GameObjects.Graphics;
@@ -13,6 +14,8 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
+    this.load.path = "https://ddmath.s3.ap-northeast-2.amazonaws.com";
+
     this.loadGameImages();
     this.loadCardImages();
     this.loadSoundEffects();
@@ -117,7 +120,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("stone2", "/character/stone2.png");
     this.load.image("stone3", "/character/stone3.png");
     this.load.image("stone4", "/character/stone4.png");
-    this.load.image("stone8", "/character/stone8.png");
 
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-idle", "/character/stand.png", "/character/stand.json");
