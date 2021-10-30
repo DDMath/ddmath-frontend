@@ -75,7 +75,6 @@ precacheAndRoute([
   { url: `${s3url}/character/stone2.png`, revision: null },
   { url: `${s3url}/character/stone3.png`, revision: null },
   { url: `${s3url}/character/stone4.png`, revision: null },
-  { url: `${s3url}/icons/favicon.ico`, revision: null },
   { url: `${s3url}/game/board.png`, revision: null },
   { url: `${s3url}/game/enemy-blue.png`, revision: null },
   { url: `${s3url}/game/enemy-green.png`, revision: null },
