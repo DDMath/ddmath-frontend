@@ -37,7 +37,7 @@ const Wrapper = styled.div`
 
   background-size: cover;
   background-position: center;
-  background-image: url("https://ddmath.s3.ap-northeast-2.amazonaws.com/background/welcome.png");
+  background-image: url("https://ddmath.s3.ap-northeast-2.amazonaws.com/background/welcome.webp");
 `;
 
 export default Welcome;

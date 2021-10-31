@@ -82,11 +82,11 @@ export default class Preloader extends Phaser.Scene {
   }
 
   private loadBackgroundImages() {
-    this.load.image("background1", "/background/desk1.png");
+    this.load.image("background1", "/background/desk1.webp");
     this.load.image("background2", "/background/desk2.png");
     this.load.image("background3", "/background/desk3.png");
 
-    this.load.image("lobby", "/background/lobby.png");
+    this.load.image("lobby", "/background/lobby.webp");
     this.load.image("stage", "/background/stage.png");
   }
 
@@ -102,7 +102,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("sound-off", "/game/sound-off.png");
     this.load.image("user-info", "/game/user-info.png");
 
-    this.load.image("board", "/game/board.png");
+    this.load.image("board", "/game/board.webp");
     this.load.image("heart", "/game/heart.png");
     this.load.image("point", "/game/point.png");
     this.load.image("cannon", "/game/cannon.png");

@@ -16,7 +16,7 @@ registerRoute(
   ({ request }) =>
     request.destination === "style" ||
     request.destination === "script" ||
-    request.destination === "manifest",
+    request.destination === "worker",
   new StaleWhileRevalidate({
     cacheName: "assets",
     plugins: [
@@ -40,11 +40,11 @@ registerRoute(
 const s3url = "https://ddmath.s3.ap-northeast-2.amazonaws.com";
 
 precacheAndRoute([
-  { url: `${s3url}/background/desk1.png`, revision: null },
+  { url: `${s3url}/background/desk1.webp`, revision: null },
   { url: `${s3url}/background/desk2.png`, revision: null },
   { url: `${s3url}/background/desk3.png`, revision: null },
   { url: `${s3url}/background/stage.png`, revision: null },
-  { url: `${s3url}/background/lobby.png`, revision: null },
+  { url: `${s3url}/background/lobby.webp`, revision: null },
   { url: `${s3url}/card/card.png`, revision: null },
   { url: `${s3url}/card/check-blue.png`, revision: null },
   { url: `${s3url}/card/check-green.png`, revision: null },
@@ -75,7 +75,7 @@ precacheAndRoute([
   { url: `${s3url}/character/stone2.png`, revision: null },
   { url: `${s3url}/character/stone3.png`, revision: null },
   { url: `${s3url}/character/stone4.png`, revision: null },
-  { url: `${s3url}/game/board.png`, revision: null },
+  { url: `${s3url}/game/board.webp`, revision: null },
   { url: `${s3url}/game/enemy-blue.png`, revision: null },
   { url: `${s3url}/game/enemy-green.png`, revision: null },
   { url: `${s3url}/game/enemy-yellow.png`, revision: null },
