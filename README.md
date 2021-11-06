@@ -1,6 +1,6 @@
 # 🎮 DD Math
 
-<welcome 사진>
+![welcome](https://user-images.githubusercontent.com/68883173/140612050-178ce2de-c4d1-43ec-b549-db94e40569dd.png)
 
 <code>#Math Education Game</code>
 <code>#For Kids</code>
@@ -17,7 +17,17 @@ DD수학은 영&#183;유아를 위한 수학 교육 게임입니다.
 
 ## 🖼 Preview
 
-(시연영상)
+https://user-images.githubusercontent.com/68883173/140612065-cbf199bf-045e-4c2e-b177-be3c55d1ddbe.mp4
+### 첫 번째 게임 (Shooting game)
+  - 1부터 10까지 차례로 풍선을 터뜨리는 게임입니다.
+
+https://user-images.githubusercontent.com/68883173/140612076-6d79629d-5a0b-4b9c-aa8f-4ee2457dc056.mp4
+### 두 번째 게임 (Puzzle game)
+  - 과일과 숫자에 맞춰 카드를 맞추어 넣는 게임입니다.
+
+https://user-images.githubusercontent.com/68883173/140612079-d5c25f1c-75a9-4a80-b4b6-ccbb67a84beb.mp4
+### 세 번째 게임 (Matching game)
+  - 같은 모양을 가진 카드끼리 연결하는 게임입니다.
 
 <br>
 
@@ -111,7 +121,7 @@ MONGODB_NAME=<db name>
   1. 드래그가 가능한 카드
   2. 포인트 객체를 자식으로 갖고 있는 카드
 
-다만, 현재는 객체를 충분히 분리하지 않았기 때문에, 각 인스턴스가 사용하지 않는 기능까지도 전부 상속받고 있는 비효율적인 구조를 갖고 있습니다. Interface나 Abstract Class를 통해 각 카드를 구현했다면 더욱 효율적인 구조를 가질 수 있었을 것이라는 아쉬움이 남습니다.
+- 다만, 현재는 객체를 충분히 분리하지 않았기 때문에, 각 인스턴스가 사용하지 않는 기능까지도 전부 상속받고 있는 비효율적인 구조를 갖고 있습니다. Interface나 Abstract Class를 통해 각 카드를 구현했다면 더욱 효율적인 구조를 가질 수 있었을 것이라는 아쉬움이 남습니다.
 
 ### Service Worker
 
