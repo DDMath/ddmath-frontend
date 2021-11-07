@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 
@@ -6,8 +6,10 @@ import { theme } from "./styles/theme";
 import { flexCenter } from "./styles/mixin";
 import { GlobalStyle } from "./styles/globalStyle";
 
-import Game from "./Game";
-import Welcome from "./Welcome";
+const Welcome = lazy(() => import("./Welcome"));
+const Game = lazy(() => import("./Game"));
+
+const renderLoader = () => <p>Loading</p>;
 
 function App() {
   window.addEventListener("load", () => {
@@ -19,11 +21,13 @@ function App() {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Content>
-          <Switch>
-            <Route exact path="/" component={Welcome} />
-            <Route path="/game" component={Game} />
-            <Redirect to="/" />
-          </Switch>
+          <Suspense fallback={renderLoader()}>
+            <Switch>
+              <Route exact path="/" component={Welcome} />
+              <Route path="/game" component={Game} />
+              <Redirect to="/" />
+            </Switch>
+          </Suspense>
         </Content>
       </ThemeProvider>
     </DisplayContainer>
