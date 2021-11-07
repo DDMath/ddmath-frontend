@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import MatchingGame from "./Game";
 import { SOUND } from "../../constants";
 import { IDraggablePoint } from "../../types/game";

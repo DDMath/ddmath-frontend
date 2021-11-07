@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import CardBase from "./CardBase";
 import DraggableCard from "../stage2/DraggableCard";
 import DraggablePoint from "../stage3/DraggablePoint";

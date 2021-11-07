@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import { GAME, SCENE, COLOR } from "../../constants";
 
 interface IGame {

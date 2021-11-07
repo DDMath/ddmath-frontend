@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 export default class GameBoard extends Phaser.GameObjects.Container {
   private gameBoard: Phaser.GameObjects.Sprite;
 

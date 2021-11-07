@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import Ball from "./Ball";
 import ShotPreview from "./ShotPreview";
 

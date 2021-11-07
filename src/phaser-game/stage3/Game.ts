@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import Grid from "../common/Grid";
 import DraggablePoint from "./DraggablePoint";
 

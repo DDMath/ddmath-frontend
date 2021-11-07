@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import MatchingGame from "../stage3/Game";
 
 import { COLOR } from "../../constants";

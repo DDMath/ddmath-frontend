@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser from "../phaser.min.js";
 
 import Lobby from "./scenes/Lobby";
 import GameOver from "./scenes/GameOver";

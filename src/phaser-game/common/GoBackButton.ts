@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import addButtonEvent from "./ButtonEvent";
 import { SCENE } from "../../constants";
 import { sceneEvents } from "../events/EventsManager";

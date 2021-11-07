@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import GoBackButton from "./GoBackButton";
 import GameGuideButton from "./GameGuideButton";
 

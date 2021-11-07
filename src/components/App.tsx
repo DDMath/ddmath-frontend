@@ -9,8 +9,6 @@ import { GlobalStyle } from "./styles/globalStyle";
 const Welcome = lazy(() => import("./Welcome"));
 const Game = lazy(() => import("./Game"));
 
-const renderLoader = () => <p>Loading</p>;
-
 function App() {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js");
@@ -21,7 +19,7 @@ function App() {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Content>
-          <Suspense fallback={renderLoader()}>
+          <Suspense fallback={<div>Loading...</div>}>
             <Switch>
               <Route exact path="/" component={Welcome} />
               <Route path="/game" component={Game} />

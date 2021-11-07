@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import Enemy from "./Enemy";
 import Cannon from "./Cannon";
 import ShotPreview from "./ShotPreview";

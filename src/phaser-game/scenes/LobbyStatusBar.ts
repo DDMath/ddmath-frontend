@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import { COLOR, SCENE } from "../../constants";
 import { IUserStatus } from "../../types/user";
 

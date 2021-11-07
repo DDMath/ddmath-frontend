@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useHistory } from "react-router";
 import { fullWidthAndHeight } from "./styles/mixin";
 
-import Phaser from "phaser";
 import { config } from "../phaser-game/config";
 
 function Game() {

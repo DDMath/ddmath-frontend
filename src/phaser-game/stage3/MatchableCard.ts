@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import CardBase from "../common/CardBase";
 import { ICardData } from "../../types/game";
 

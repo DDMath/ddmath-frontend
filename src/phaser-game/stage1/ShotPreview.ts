@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import { COLOR } from "../../constants";
 
 class PreviewCricle extends Phaser.GameObjects.Arc {

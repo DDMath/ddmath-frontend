@@ -41,6 +41,10 @@ const s3url = "https://ddmath.s3.ap-northeast-2.amazonaws.com";
 
 precacheAndRoute([
   { url: `${s3url}/background/desk1.webp`, revision: null },
+  { url: `${s3url}/character/stone1.webp`, revision: null },
+  { url: `${s3url}/character/stone2.webp`, revision: null },
+  { url: `${s3url}/character/stone3.webp`, revision: null },
+  { url: `${s3url}/character/stone4.webp`, revision: null },
   { url: `${s3url}/background/desk2.png`, revision: null },
   { url: `${s3url}/background/desk3.png`, revision: null },
   { url: `${s3url}/background/stage.png`, revision: null },
@@ -71,10 +75,6 @@ precacheAndRoute([
   { url: `${s3url}/character/run.png`, revision: null },
   { url: `${s3url}/character/stand.json`, revision: null },
   { url: `${s3url}/character/stand.png`, revision: null },
-  { url: `${s3url}/character/stone1.png`, revision: null },
-  { url: `${s3url}/character/stone2.png`, revision: null },
-  { url: `${s3url}/character/stone3.png`, revision: null },
-  { url: `${s3url}/character/stone4.png`, revision: null },
   { url: `${s3url}/game/board.webp`, revision: null },
   { url: `${s3url}/game/enemy-blue.png`, revision: null },
   { url: `${s3url}/game/enemy-green.png`, revision: null },

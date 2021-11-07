@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import { getUserData } from "../../api";
 import { sceneEvents } from "../events/EventsManager";
 
@@ -116,10 +115,10 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("cursor-image", "/game/cursor.png");
     this.load.atlas("cursor", "/game/cursor-anim.png", "/game/cursor-anim.json");
 
-    this.load.image("stone1", "/character/stone1.png");
-    this.load.image("stone2", "/character/stone2.png");
-    this.load.image("stone3", "/character/stone3.png");
-    this.load.image("stone4", "/character/stone4.png");
+    this.load.image("stone1", "/character/stone1.webp");
+    this.load.image("stone2", "/character/stone2.webp");
+    this.load.image("stone3", "/character/stone3.webp");
+    this.load.image("stone4", "/character/stone4.webp");
 
     this.load.atlas("character-run", "/character/run.png", "/character/run.json");
     this.load.atlas("character-idle", "/character/stand.png", "/character/stand.json");

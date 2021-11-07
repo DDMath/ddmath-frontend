@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import Grid from "../common/Grid";
 import GameBoard from "./GameBoard";
 import hitArea from "./puzzleHitArea";

@@ -1,5 +1,3 @@
-import Phaser from "phaser";
-
 import addButtonEvent from "../common/ButtonEvent";
 import { sceneEvents } from "../events/EventsManager";
 

@@ -1,4 +1,3 @@
-import Phaser from "phaser";
 import addButtonEvent from "./ButtonEvent";
 
 export default class GameGuideButton extends Phaser.GameObjects.Sprite {
