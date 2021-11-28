@@ -6,10 +6,12 @@
     "noImplicitReturns": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2017",
+    "target": "es5",
     "allowJs": true,
     "jsx": "react",
+    "declaration": true,
     "esModuleInterop": true,
+    "strictNullChecks": false,
     "baseUrl": "./src",
     "paths": {
       "~/*": ["./*"]

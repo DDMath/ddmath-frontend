@@ -10,10 +10,6 @@ const Welcome = lazy(() => import("./Welcome"));
 const Game = lazy(() => import("./Game"));
 
 function App() {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js");
-  });
-
   return (
     <DisplayContainer>
       <GlobalStyle />

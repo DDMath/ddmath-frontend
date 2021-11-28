@@ -9,6 +9,8 @@
 DD수학은 영&#183;유아를 위한 수학 교육 게임입니다.  
 아이들이 쉽게 이용할 수 있도록, 드래그 앤 드랍을 이용해 게임을 구현해 보았습니다.
 
+- 프로젝트 기간 2021.09.27 - 2021. 10. 18 (기획 1주, 개발 2주)
+
 👉 Deploy Address: https://www.ddmath.fun  
 👉 Frontend: https://github.com/DDMath/ddmath-frontend  
 👉 Backend: https://github.com/DDMath/ddmath-backend

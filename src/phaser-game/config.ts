@@ -1,5 +1,3 @@
-import Phaser from "../phaser.min.js";
-
 import Lobby from "./scenes/Lobby";
 import GameOver from "./scenes/GameOver";
 import Preloader from "./scenes/Preloader";
@@ -12,7 +10,7 @@ import Stage1GameGuide from "./stage1/GameGuide";
 import Stage2GameGuide from "./stage2/GameGuide";
 import Stage3GameGuide from "./stage3/GameGuide";
 
-export const config: Phaser.Types.Core.GameConfig = {
+export const config = {
   type: Phaser.AUTO,
   scale: {
     mode: Phaser.Scale.FIT,

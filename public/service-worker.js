@@ -38,6 +38,7 @@ registerRoute(
 );
 
 const s3url = "https://ddmath.s3.ap-northeast-2.amazonaws.com";
+precacheAndRoute(self.__WB_MANIFEST);
 
 precacheAndRoute([
   { url: `${s3url}/background/desk1.webp`, revision: null },
